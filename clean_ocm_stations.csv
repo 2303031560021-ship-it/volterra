@@ -1,0 +1,6 @@
+ocm_id,station_name,address,city,state,latitude,longitude,connector_type,power_kw,ac_dc,number_of_points,operator,status,usage,usage_cost,last_verified
+502296,MobiLane Shree Ambica Auto Udhana,"Plot No 12, 13, Mahatma Gandhi Rd, opposite Jain Mandir, Udhana GIDC, Udhna Udhyog Nagar, Udhana, Surat, Gujarat 394210",Surat,Gujarat,21.17227412,72.84159844,Unknown,15.0,DC,1,(Unknown Operator),Operational,Public,,2026-08-08T11:40:00Z
+302744,Kot Safil road,Gopi Talav,Surat,Gujarat,21.190833374358448,72.82874435126223,Type 2 (Socket Only),2.5,AC (Single-Phase),1,(Unknown Operator),Operational,Public - Pay At Location,,2024-09-02T01:54:00Z
+502282,MobiLane E Motion Logitech Pvt Ltd,"Block no.63, Karadva , Chorasi, Surat, 394210",Surat,Gujarat,21.13824793,72.8810473,Unknown,,DC,1,(Unknown Operator),Operational,Public,,2026-08-08T10:40:00Z
+502297,MobiLane Shree Ambica Auto Hazira,"Plot No 10 & 11 Magdalla Hazira Rd, Bhatpore, opposite ONGC, GIDC, Chorasi, Surat, Gujarat 394510",Sueat,Gujarat,21.1640446,72.73775251,Unknown,15.0,DC,1,(Unknown Operator),Operational,Public,,2026-08-08T11:55:00Z
+471993, Chargezone Hotel Rangoli,Nh 48,Navsari,GJ,21.038975778372475,72.9752654100723,CCS (Type 2),60.0,DC,1,Chargezone (India),Operational,Public - Membership Required,21.0/kWh,2026-01-20T02:41:00Z

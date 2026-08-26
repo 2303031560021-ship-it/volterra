@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  --color-tertiary-fixed-dim: #7ada9b;
+  --color-on-tertiary-fixed-variant: #00522c;
+  --color-tertiary-container: #00210e;
+  --color-secondary-fixed-dim: #abd551;
+  --color-secondary-fixed: #c6f26a;
+  --color-on-error: #ffffff;
+  --color-on-background: #191c1a;
+  --color-outline: #737876;
+  --color-surface-container-highest: #e1e3de;
+  --color-on-primary: #ffffff;
+  --color-surface-container: #ecefea;
+  --color-inverse-surface: #2e312e;
+  --color-on-error-container: #93000a;
+  --color-error-container: #ffdad6;
+  --color-surface-variant: #e1e3de;
+  --color-inverse-primary: #bec9c5;
+  --color-background: #f5f7f2;
+  --color-on-tertiary-container: #33955d;
+  --color-on-surface: #191c1a;
+  --color-error: #ba1a1a;
+  --color-on-secondary-container: #506e00;
+  --color-surface-dim: #d8dbd6;
+  --color-inverse-on-surface: #eff1ec;
+  --color-secondary: #4b6700;
+  --color-on-tertiary: #ffffff;
+  --color-outline-variant: #c3c7c5;
+  --color-primary-fixed-dim: #bec9c5;
+  --color-primary: #101a18;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #c7f36b;
+  --color-surface-bright: #f5f7f2;
+  --color-primary-container: #131d1b;
+  --color-tertiary: #000000;
+  --color-primary-fixed: #dae5e1;
+  --color-on-secondary-fixed: #141f00;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e7e9e4;
+  --color-surface: #f5f7f2;
+  --color-surface-tint: #56615e;
+  --color-on-primary-fixed: #131d1b;
+  --color-on-tertiary-fixed: #00210e;
+  --color-on-primary-container: #7b8683;
+  --color-on-secondary-fixed-variant: #374e00;
+  --color-on-surface-variant: #434846;
+  --color-on-primary-fixed-variant: #3e4946;
+  --color-tertiary-fixed: #96f7b5;
+  --color-surface-container-low: #f2f4ef;
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+  --radius-3xl: 28px;
+
+  --spacing-grid-columns: 12;
+  --spacing-grid-gutter: 24px;
+  --spacing-container-padding: 24px;
+  --spacing-stack-gap: 16px;
+  --spacing-section-gap: 120px;
+  --spacing-base: 8px;
+
+  --font-display-hero: "Space Grotesk", sans-serif;
+  --font-label-sm: "Inter", sans-serif;
+  --font-body-xl: "Inter", sans-serif;
+  --font-headline-lg: "Space Grotesk", sans-serif;
+  --font-headline-lg-mobile: "Space Grotesk", sans-serif;
+  --font-headline-md: "Space Grotesk", sans-serif;
+  --font-body-md: "Inter", sans-serif;
+
+  --text-display-hero: 84px;
+  --text-display-hero--line-height: 1.0;
+  --text-display-hero--letter-spacing: -0.04em;
+  --text-display-hero--font-weight: 700;
+
+  --text-label-sm: 14px;
+  --text-label-sm--line-height: 1.2;
+  --text-label-sm--letter-spacing: 0.02em;
+  --text-label-sm--font-weight: 600;
+
+  --text-body-xl: 20px;
+  --text-body-xl--line-height: 1.6;
+  --text-body-xl--letter-spacing: 0em;
+  --text-body-xl--font-weight: 400;
+
+  --text-headline-lg: 48px;
+  --text-headline-lg--line-height: 1.1;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg--font-weight: 700;
+
+  --text-headline-lg-mobile: 36px;
+  --text-headline-lg-mobile--line-height: 1.1;
+  --text-headline-lg-mobile--letter-spacing: -0.02em;
+  --text-headline-lg-mobile--font-weight: 700;
+
+  --text-headline-md: 32px;
+  --text-headline-md--line-height: 1.2;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.5;
+  --text-body-md--letter-spacing: 0em;
+  --text-body-md--font-weight: 400;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+    position: relative;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  /* Glassmorphism utilities */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 24px 48px -12px rgba(16, 26, 24, 0.08);
+  }
+
+  .energy-path {
+    height: 2px;
+    background: linear-gradient(90deg, rgba(16,26,24,0) 0%, rgba(199,243,107,1) 50%, rgba(16,26,24,0) 100%);
+    opacity: 0.8;
+  }
+}

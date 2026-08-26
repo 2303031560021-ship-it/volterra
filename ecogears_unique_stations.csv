@@ -1,0 +1,100 @@
+station_name,address,latitude,longitude,networks,charger_levels,connector_types,power_kw,prices,availability,record_count
+IndianOil Sonari,"Ground Floor Sonari, Bonandh, Jiav, Surat, Sonari, Gujarat 395023",21.110613,72.838146,IndianOil,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Khajod,"Dream City Parking Area, SDB Road, Diamond Bourse, Surat, Khajod, Gujarat 395007",21.110777,72.796964,SMC,DC Fast,Type 2,50,18,Available,1
+BPCL Charging Station Udhana,"4V95+9P6, Unn Patiya, Udhana, Surat, Un, Gujarat 395023",21.11841,72.859268,BPCL,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Bhestan,"Sairaj Residency, Bhestan-Jiav Rd, Bhestan, Surat, Gujarat 395023",21.125232,72.851644,SMC,DC Fast,Type 2,50,18,Available,1
+Tarang Electric Vehicles Udhana,"Plot No. 2, Raj industries Pandesara Road, GIDC, Udhana, Surat, Gujarat 394221",21.129368,72.83099,Tarang EV,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Vadod,"Jay Girnar Autoelectric, New Bamroli Rd, next to Nyara petrol pump, Vadod, Bamroli, Udhana, Surat, Gujarat 394210",21.131994,72.82758,"Ather Grid, HPCL","Level 1, Level 2",Type 2,"3, 11",15,Available,2
+Log9 Charging Station Surat,"Unit 3, Dumas Rd, near Green Field Naturals, Surat, Gujarat 395007",21.133167,72.747083,Log9,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Vesu,"4QM6+MJG, Vesu Canal Rd, Vesu, Surat, Gujarat 395007",21.134186,72.76157,Ather Grid,Level 1,Type 2,3,15,Available,1
+Denchi Electric Vesu,"Aagam Shopping World, A 13, Vesu Canal Rd, opposite Nandini 1 Apartments, Near Agarwal School, Vesu, Surat, Gujarat 395007",21.135491,72.774161,Denchi Electric,Level 2,Type 2,11,15,Available,1
+Tata Power Charging Station Majura,"Village:, Survey/Block No:- 88, T.P. No:- 42, F.P. No:- 33, Majura, Bhimrad, Surat, Gujarat 395007",21.137048,72.799548,Tata Power,Level 2,Type 2,11,15,Available,1
+New Tech Toys & Gift Articles Vesu,"Ground Floor, Shop no. 3, Aakash Retail, NM Mavani Rd, opposite Vastugram, Vesu, Surat, Gujarat 395007",21.141162,72.765064,Independent,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Udhana,"Plot No 535 to 534, Unity Industrial Estate, Udhana, Surat, Gujarat 395023",21.141403,72.853455,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Vesu,"4QRJ+JPP, near Vesu, Vesu, Surat, Gujarat 395007",21.141586,72.781815,SMC,Level 2,Type 2,11,15,Available,1
+Tata Power Charging Station Vesu,"Block No, 217/B, VIP Rd, near E-Space, Bharthana, Vesu, Surat, Gujarat 395007",21.142835,72.79268,Tata Power,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Magdalla,"VR, Dumas Rd, nr. VR Mall, New Magdalla, Surat, Gujarat 395007",21.145144,72.75762,Ather Grid,Level 1,Type 2,3,15,Available,1
+Ather Grid Charging Station Magdalla,"Dumas Rd, VR, Magdalla, Surat, Gujarat 395007",21.145174,72.756949,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Udhana,"4RWX+PGR, Pramukh Park, Udhana, Surat, Gujarat 394210",21.146837,72.849099,SMC,Level 2,Type 2,11,15,Available,1
+Ather Charging Station Dindoli,"4VXF+56J, Karadva - Dindoli Rd, Sai Shiv Shakti Society, Dindoli, Surat, Gujarat 394210",21.14796,72.873002,Ather Grid,Level 1,Type 2,3,15,Available,1
+Mercedes-Benz Charging Station Bharthana,"Reegus Business Centre, New Tirumala, Bharthana, Surat, Gujarat 395007",21.148496,72.797973,Mercedes-Benz,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Pandesara,"Pandesara GIDC Main Road, 4RX8+HF6, GIDC, Trupte Nagar, Gopal Nagar Society, Pandesara, Surat, Gujarat 394210",21.148914,72.816148,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Pandesara,"G11,12, Anaya Business hub, D-mart, beside pandesara, Gopal Nagar Society, Pandesara, Surat, Gujarat 394210",21.148916,72.816161,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Althan,"Althan Depot/Terminal, Althan, Surat, Gujarat 395017",21.149495,72.80917,SMC,DC Fast,Type 2,50,18,Available,1
+Jio-bp pulse Charging Station Vesu,"Reliance Mall Udhana Magdalla Rd, Char Rasta, near RM JHASV School, Vesu, Surat, Gujarat 395007",21.149934,72.773686,Jio-bp,Level 2,Type 2,11,15,Available,1
+BMW Destination Charging Station Magdalla,"TP No. 3, Rundh Paikee, Besides Rangoli Restaurant, Surat - Dumas Rd, New Magdalla, Rundh, Gujarat 395007",21.151684,72.76256,BMW,DC Fast,Type 2,50,18,Available,1
+Electric Vehicle Charging Station Bhedwad,"5R2R+PRM, Harichha Ind., Shed, opp. Nova Complex, Bhedwad, Pandesara, Udhana, Surat, Gujarat 394210",21.151834,72.842038,Independent,DC Fast,Type 2,50,18,Available,1
+Hindustan Petroleum Corporation Limited Althan,"4 Plot, TP No, City Light Rd, opposite Maheshwari Bhavan, New Tirumala, New City Light, Althan, Surat, Gujarat 395007",21.152007,72.801226,HPCL,Level 2,Type 2,11,15,Available,1
+Tata Power Charging Station Piplod,"SHIVA KRUPA, SNS BUSINESS PARK, Udhana - Magdalla Rd, Piplod, Surat, Gujarat 395007",21.152744,72.773698,Tata Power,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Vesu,"G1 and G2, Milagro Milestone, opposite UM Road, Someshwara Enclave, Vesu, Surat, Gujarat 395007",21.15295,72.778545,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Piplod,"5Q39+CG5, Piplod, Rundh, Gujarat 395007",21.153555,72.768991,SMC,DC Fast,Type 2,50,18,Available,1
+Tata Power Charging station Limla,"5P3R+CQV, GJ SH 168, Kavas, Limla, Gujarat 394518",21.153835,72.741854,Tata Power,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Magdalla,"5Q47+FP4 T.P. 3, F.P. 76, Dumas Rd, near Valentine Multiplex, New Magdalla, Surat, Gujarat 395007",21.156358,72.76426,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Gandhi,"5Q5W+XX2, Udhana - Magdalla Rd, Ambika Industrial Society 1, Gandhi Kutir, Surat, Gujarat 395017",21.159876,72.797405,SMC,Level 2,Type 2,11,15,Available,1
+Ola Charging Station Udhana,"shop 1, Udhana Main Rd, Harinagar-3, Citi Industrial Estate, Udhna Udhyog Nagar, Udhana, Surat, Gujarat 394210",21.159962,72.842969,Ola,Level 2,Type 2,11,15,Available,1
+Tata Power Charging Station Piplod,"Ginger Hotel, near Iscon Mall, off Dumas Road, Piplod, Surat, Gujarat 395007",21.160075,72.768069,Tata Power,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Athwa,"5Q7J+F94 ratri market, SVNIT Campus, Athwa, Surat, Gujarat 395007",21.16363,72.780715,SMC,Level 2,Type 2,11,15,Available,1
+MobiLane Charging Station Bhatpore,"Plot No 10 & 11, Magdalla Hazira Rd, opposite ONGC, GIDC, Ichhapore GIDC, Bhatpore, Surat, Gujarat 394510",21.164052,72.737656,MobiLane,Level 2,Type 2,11,15,Available,1
+VerdeMobility Charging Station Piplod,"401, Kargil Chowk, Nandi Park Society, Piplod, Surat, Gujarat 395007",21.164078,72.7783,VerdeMobility,Level 2,Type 2,11,15,Available,1
+Electric Vehicle Charging Station Udhana,"5R7P+X7H, Udhyog Darshan Society, Udhana Village, Udhana, Surat, Gujarat 394210",21.164931,72.835734,Independent,Level 2,Type 2,11,15,Available,1
+Fortum Charge & Drive Charging Station Bhatpore,"MG Surat Bhatpore MG Surat Plot # 220-328 Bhatpore GIDC, MG Workshop, Hazira Rd, Bhatpore, Surat, Gujarat 394510",21.168074,72.735854,Fortum,DC Fast,Type 2,50,18,Available,1
+Ather Grid Charging Station Udhana,"Mihir Silk Mills Compound, 21/1 & 2, Bamroli Rd, beside Manhar Dyeing, near Komal Circle, Laxmi Nagar, Udhana, Surat, Gujarat 395002",21.168367,72.83031,Ather Grid,Level 1,Type 2,3,15,Available,1
+Jio-bp pulse Charging Station Vesu,"Reliance Mall, Bhattar Char Rasta, near Udhana - Magdalla Road, near RM JHASV School, Laxmi Nagar, Vesu, Surat, Gujarat 395002",21.171489,72.829497,Jio-bp,DC Fast,Type 2,50,18,Available,1
+MobiLane Charging Station Udhana,"5RCR+RHV, Udhana GIDC, Hari Ichchha Industrial Society, Udhna Udhyog Nagar, Udhana, Surat, Gujarat 394210",21.172225,72.841567,MobiLane,Level 2,Type 2,11,15,Available,1
+Trupati Electric Ambanagar,"Bhavani Complex, Komal Cir, near Surat, Bhatar Char Rasta, Shivkrupa Society, Ambanagar, Surat, Gujarat 395002",21.172565,72.826385,Trupati,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Umra,"Shop #1, Dharmesh Apt, opp. Parle Point Circle, Parle Point, Meghdoot Society, Umra Gam, Athwa, Surat, Gujarat 395007",21.174658,72.794357,SMC,DC Fast,Type 2,50,18,Available,1
+Ather Grid Charging Station Limbayat,"Ankit Gas Center, Sarve no 9, Block no 66, Plot no 5/6, near Mamta Cinema, Mahaprabhu nagar, Chorasi, Limbayat, Surat, Gujarat 395012",21.178312,72.86132,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Shakti,"162, Sanjay Nagar, Priyanka City Light Society, Shakti Nagar, Surat, Gujarat 395012",21.179564,72.871613,SMC,DC Fast,Type 2,50,18,Available,1
+ChargeZone Charging Station Magob,"Bus Depot, Parvat Gam-Devadh Rd, nearby Magob, Shakti Nagar, Surat, Gujarat 395010",21.17973,72.877935,ChargeZone,Level 2,Type 2,11,15,Available,1
+Jio-bp pulse Charging Station Antroli,"Antroli, Gujarat 394325",21.18,72.93,Jio-bp,Level 2,Type 2,11,15,Available,1
+BPCL Charging Station Bhatha,"5QJ7+MCP, Bhatha, Surat, Gujarat 395009",21.181703,72.763583,BPCL,DC Fast,Type 2,50,18,Available,1
+Jio-bp Bhatha,"Old Sy No 10/2, Block No 14, Plot No 14, Hazira Rd, Choryasi, Bhatha, Surat, Hazira, Gujarat 394510",21.181976,72.76468,Jio-bp,Level 2,Type 2,11,15,Available,1
+Adani Charging Station Parvat,"Shop No.1, Ground Floor, The Palace, opp. Capital Square, Parvat Gam, Shakti Nagar, Surat, Gujarat 395012",21.182117,72.871162,Adani,DC Fast,Type 2,50,18,Available,1
+Ather Grid Charging Station Ring,"8, Ring Rd, near DCB Bank, Suman Desai NI Wadi, Udhana Darwaja, Surat, Gujarat 395002",21.182992,72.830235,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Garib,"5VM6+H4, Kailash Nagar Society, Garib Nawaz Nagar, Surat, Gujarat 395010",21.183765,72.860556,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Athwa,"D-1, Surat - Dumas Rd, Chopati, Athwalines, Athwa, Surat, Gujarat 395001",21.18409,72.805777,SMC,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Aanjada,"5RMP+M48, Millennium Market, Aanjada Nagar, New Textile Market, Surat, Gujarat 395002",21.184166,72.835335,SMC,DC Fast,Type 2,50,18,Available,1
+Ather Grid Charging Station Bhatha,"5QP6+233, Bhatha, Surat, Gujarat 394510",21.185001,72.760181,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Adajan,"Star bazar bridge, Hazira Rd, Jalaram Society, Adajan Gam, Adajan, Surat, Gujarat 395009",21.185082,72.792844,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Anjana,"34, Jay Prakash Narayan Marg, Anjana, narayan 2, New Textile Market, Surat, Gujarat 395002",21.185072,72.836331,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Adajan,"5QPM+3QQ, Sanjeev Kumar Auditorium Rd, Adajan Gam, Adajan, Surat, Gujarat 394510",21.18522,72.784488,SMC,DC Fast,Type 2,50,18,Available,1
+Electric Vehicle Charging Station Ring,"201, Torrent Power Ring Rd, New Textile Market, Surat, Gujarat 395002",21.186407,72.838838,Torrent Power,DC Fast,Type 2,50,18,Available,1
+IndianOil Ichchhapor,"RS No 672/2 686 & 687, Hazira Rd, opp. HAEP Township, nr. Kawas, Patia, Ichchhapor, Surat, Hazira, Gujarat 394510",21.187741,72.712073,IndianOil,Level 2,Type 2,11,15,Available,1
+Bolt.Earth EV Charging Station Kumbharia,"380005, Kumbharia Gam, Surat, Gujarat 395006",21.18847,72.896358,Bolt.Earth,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Moti,"Pillar No. 35, Pay & Use Toilet, Central Zone, Ring Rd, Millennium Market, Moti Begumwadi, Surat, Gujarat 395002",21.188819,72.840632,SMC,DC Fast,Type 2,50,18,Available,1
+Tata Power Charging Station Pal,"5QQG+XF9 IOCL Pump, Pal Gam, Surat, Gujarat 394510",21.189919,72.776247,Tata Power,Level 2,Type 2,11,15,Available,1
+Tata Power Charging Station Adajan,"Fortune High Street, Soku Developers, opp. western arena, near Madhuvan Circle, Adajan Gam, Adajan, Surat, Gujarat 395009",21.190764,72.785812,Tata Power,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Rustampura,"5RRH+9FX, Open Plot beside Gopi-Talav Multi Level Parking, Rustampura, Navsari Bazar, Surat, Gujarat 395002",21.190827,72.8286,SMC,DC Fast,Type 2,50,18,Available,1
+EVolute Charging Station Pal,"5QRH+9GM, Pal Gam Rd, Pal Gam, Surat, Gujarat 394510",21.190973,72.778781,EVolute,Level 2,Type 2,11,15,Available,1
+Electric Vehicle Charging Station Moti,"5RRR+FRJ Torrent Power, Ring Rd, J.J.A.C. Market, Moti Begumwadi, New Textile Market, Surat, Gujarat 395002",21.191212,72.842013,Torrent Power,DC Fast,Type 2,50,18,Available,1
+VerdeMobility Charging Station Magob,"5VR9+FX8, Magob, Surat, Gujarat 395011",21.191158,72.86996,VerdeMobility,Level 1,Type 2,3,15,Available,1
+Electric Vehicle Charging Station Parvat,"SHOP NO.13 GROUND FLOOR, Shilalekh Residency, BRTS, Vesu Canal Rd, opp. Amaazia Water Park, Parvat Patiya, Surat, Gujarat 395011",21.191625,72.865408,Independent,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Adajan,"Block no. 23/A, R.S No. 38/2, Gaurav Path Road, near Kratos Club, Adajan, Surat, Gujarat 394510",21.192575,72.77154,Ather Grid,Level 1,Type 2,3,15,Available,1
+Ather Grid Charging Station Adajan,"Harish Nagar, Housing Society, Plot No.14&15, Gujarat Gas Cir, Anand Vatika Society, Param Housing Society, Adajan, Surat, Gujarat 395009",21.192781,72.80424,Ather Grid,Level 1,Type 2,3,15,Available,1
+Ather Grid Charging Station Adajan,"Plot no -1, Maitri society, Opp Pani ni tanki, Sardar Bridge, Road, Gujarat Gas Cir, Adajan, Surat, Gujarat 395009",21.19361,72.800903,Ather Grid,Level 1,Type 2,3,15,Available,1
+Evolute Charging Station Adajan,"5QWV+55W, Bungalow Society, Karan Park, Adajan, Surat, Gujarat 395009",21.195487,72.792952,Evolute,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Adajan,"5QWQ+85W, Adajan Rd, TGB, Adajan Gam, Adajan, Surat, Gujarat 395009",21.195836,72.787781,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Mughal,"5RXC+W8X, Mughal Sarai, Surat, Gujarat 395003",21.199906,72.820759,SMC,DC Fast,Type 2,50,18,Available,1
+Tata Power Charging Station Adajan,"6R23+27R, Jahangirpura Road, Picnic Park Society, Narotam Nagar, Surat, Gujarat 395009",21.200107,72.803138,Tata Power,Level 2,Type 2,11,15,Available,1
+IndianOil Magob,"Block No 57/58/13, Tp No 34, Near Archana School, Magob, Yamuna Nagar, Surat, Gujarat 395010",21.200051,72.859747,IndianOil,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station Adajan,"1,2. Abhinandan Heights, Nr madhuvan circle, LP Savani, Coffee King, Rd, Honey Park, Adajan Gam, Adajan, Surat, Gujarat 395009",21.20145,72.793138,Ather Grid,Level 1,Type 2,3,15,Available,1
+SMC Charging Station Begampura,"Shop No 4912, Delhi Gate, Ring Rd, opp. Linear Bus Stand, Japan Market, Begampura, Surat, Gujarat 395003",21.202167,72.839487,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Adajan,"6Q3Q+263, Honey Park Rd, Adajan Gam, Adajan, Surat, Gujarat 395009",21.202524,72.788041,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Adajan,"At divya shoes Honey Park Rd, Jogani Nagar, Palanpur Patia, Jyotindra Dave Udhyan, Adajan, Surat, Gujarat 395009",21.202936,72.791407,SMC,DC Fast,Type 2,50,18,Available,1
+BMW Destination Charging Station Varachha,"Railway Station Rd, Sufi Baug, Railway Station Area, Varachha, Surat, Gujarat 395003",21.204417,72.839267,BMW,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Varachha,"6R4P+3Q3, Unapani Rd, Lal Darwaja, Varachha, Surat, Gujarat 395003",21.20514,72.836912,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Haripura,"Open Plot, 81, Unapani Rd, near School, Lal Darwaja, Haripura, Surat, Gujarat 395003",21.205677,72.835878,SMC,DC Fast,Type 2,50,18,Available,1
+VerdeMobility Charging Station Mohan,"Kanaiya Appatment, Navi Shakti Vijay Society, Soham Nagar Society, Mohan Nagar, Hirabaugh, Surat, Gujarat 395006",21.213307,72.859671,VerdeMobility,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Varachha,"6V72+75H Multilevel Parking, Varachha, Surat, Gujarat 395006",21.213463,72.850431,SMC,DC Fast,Type 2,50,18,Available,1
+Vishal E-Vehicle Katargam,"8, Maruti Chambers, Nr prannath hospital, Ved Rd, Prabhunagar, Katargam, Surat, Gujarat 395004",21.216196,72.822947,Vishal EV,Level 2,Type 2,11,15,Available,1
+Shivam Electronics Singanpor,"A ground, Nilkanth, Plot no 12, Ved Rd, Industrial Area, Singanpor, Surat, Gujarat 395004",21.216727,72.82088,Independent,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Katargam,"SMC community hall, behind Kiran hospital, Tunki, Katargam, Surat, Gujarat 395004",21.21735,72.834238,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Singanpor,"Katargam, near Causeway Road, opp. Premanand Garden (SMC), Industrial Area, Singanpor, Surat, Gujarat 395004",21.22037,72.807287,SMC,DC Fast,Type 2,50,18,Available,1
+Tata Power Charging Station Katargam,"Shed no 869, Angadia Enterprise, Sumul Dairy Rd, Ekta Nagar, GIDC, Katargam, Surat, Gujarat 395004",21.225082,72.84147,Tata Power,Level 2,Type 2,11,15,Available,1
+SMC Charging Station Katargam,"Gajera circle ground Sports complex, Near Katargam Lake Garden, Minaxi Wadi, Katargam, Surat, Gujarat 395004",21.227484,72.837327,SMC,Level 2,Type 2,11,15,Available,1
+Ather Grid Charging Station GIDC,"p767, Ashwini Kumar Rd, New GIDC, KR Journey, Patel Nagar, Surat, Gujarat 395008",21.228105,72.842573,Ather Grid,Level 1,Type 2,3,15,Available,1
+ChargeZone Charging Station Dabholi,"Monarch Hyundai, Causeway Link Rd, Dabholi Village, Surat, Gujarat 395004",21.230574,72.806196,ChargeZone,Level 2,Type 2,11,15,Available,1
+Torrent Power Charging Station Dabholi,"6RM3+G58, Tekra Faliya, Dabholi Village, Surat, Gujarat 395004",21.233556,72.80322,Torrent Power,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Surat,"321, Kailash Nagar, Hari Darshan Society, Vishal Nagar, Surat, Gujarat 395004",21.234597,72.836533,SMC,DC Fast,Type 2,50,18,Available,1
+SMC Charging Station Dabholi,"Ved Rd, opp. Manibag Party Plot, near Niru Farm, Pramukh Darshan Society, Dabholi, Surat, Gujarat 395004",21.238059,72.820027,SMC,DC Fast,Type 2,50,18,Available,1
+IndianOil Pura,"Block No 58/3/2, No FP 41, near Vivekananda Colleage, Jahangir Pura, Surat, Gujarat 394520",21.251344,72.787472,IndianOil,Level 2,Type 2,11,15,Available,1
