@@ -1,0 +1,35 @@
+station_name,latitude,longitude,source,connector_type,power_kw,ac_dc,operator,status,usage_cost
+"Central    Zone Fly-Over Bridge,Millennium Market Pay & Use Toilet , Pillar No. 35,    Ring Road",21.188837,72.840739,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Open Plot beside Gopi-Talav Multi Level Parking, Navsari Bazar",21.190865,72.828612,SMC,Type 2 (Socket Only),2.5,AC (Single-Phase),(Unknown Operator),Operational,18.0
+"Open Plot Near School No. 81, Una Pani Road, Lal Darwaja",21.205685,72.835885,SMC,Type 2,50.0,DC,SMC,Available,18.0
+Muglisara Multi Level Parking - Surat,21.19989,72.82095,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Below Delhi Gate FOB , Opp. Relax Inn Hotel",21.202112,72.839397,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Below Fly Over Bridge,Opp. Man Darwaja Fire Station, Ring Road",21.185062,72.836278,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Multilevel    Parking beside Sardar Smruti Bhavan, Varachha",21.213466,72.850401,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Open    Plot near Causeway, Katargam",21.220299,72.807261,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Katargam Community Hall, Vastadevi Road, Katargam",21.217372,72.83422,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Kansanagar Sports Ground, Near Katargam Lake Garden,Katargam",21.22758,72.83737,SMC,Type 2,50.0,AC,SMC,Available,18.0
+"SMC Health Club,Ved Road",21.238028,72.820096,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"North Zone Office, Surat Municipal Corporation,Behind Gajera    school",21.234583,72.836611,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"South East Zone Office, SMC, Model Town Road, Dumbhal",21.183899,72.860365,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"SMC Party Plot, Opp.    Ruturaj Textile Market, Near ITM Building,Godadra",21.179568,72.871557,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Below    Parley Point Bridge, Surat Dumas Road",21.17453,72.794544,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Open Plot at  T.P. 3, F.P.    76, near Valentine Theatre, near Sai Mandir, Opp. Central Mall, Dumas Road",21.156252,72.764152,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Parking Area of Night Food Plaza,Behind Lake view    Garden,Piplod",21.163529,72.781093,SMC,Type 2,11.0,AC,SMC,Available,15.0
+"Below Anu-Vrat Dwar Fly-Over Bridge, Udhana Magdalla Road",21.159993,72.797409,SMC,Type 2,11.0,AC,SMC,Available,15.0
+"Vesu Fire station, VIP road, Vesu",21.141555,72.78165,SMC,Type 2,11.0,AC,SMC,Available,15.0
+"Open Plot at TP 28, R-14, Near Lalbhai    Contractor Stadium",21.153539,72.769029,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Beside Chopati, Open Plot for Parking",21.184169,72.805779,SMC,Type 2,11.0,AC,SMC,Available,15.0
+"Open    Plot at TP- 58, FP -201 near D -Mart, Pandesara",21.148861,72.816132,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Moje Bhedwad, Pramukh park Industrial estate",21.146896,72.849234,SMC,Type 2,11.0,AC,SMC,Available,15.0
+"TP-48,FP 79,Jiav Budia Road,Opp.NFI Garden,Bhestan",21.125219,72.851614,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Adajan Sports Complex, Opp. Atman Park, Near L.P. Savani Road,    Adajan",21.195727,72.787812,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Below Star bazar bridge, Surat Hazira Road, Adajan",21.185048,72.793003,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Jyotindra Dave Udhyan,Opp. Jogani Nagar, Honey Park Road,Adajan",21.202981,72.791399,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Sanjeevkumar Auditorium,Behind Rajhans Cinema ,Pal",21.185163,72.784561,SMC,Type 2,50.0,DC,SMC,Available,18.0
+"Open Plot,Sidhdhchakra Recidency, Opp. Fortune Mall,Near Galaxy    Circle, Adajan",21.190979,72.778883,SMC,Type 2,11.0,AC,EVolute,Available,15.0
+Open Plot Beside D Mart-Adajan,21.195594,72.793176,SMC,Type 2,11.0,AC,Evolute,Available,15.0
+MobiLane Shree Ambica Auto Udhana,21.17227412,72.84159844,OCM,Unknown,15.0,DC,(Unknown Operator),Operational,15.0
+MobiLane E Motion Logitech Pvt Ltd,21.13824793,72.8810473,OCM,Unknown,,DC,(Unknown Operator),Operational,
+MobiLane Shree Ambica Auto Hazira,21.1640446,72.73775251,OCM,Unknown,15.0,DC,(Unknown Operator),Operational,15.0
+ Chargezone Hotel Rangoli,21.038975778372475,72.9752654100723,OCM,CCS (Type 2),60.0,DC,Chargezone (India),Operational,21.0/kWh
