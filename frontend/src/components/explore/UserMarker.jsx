@@ -1,4 +1,4 @@
-import { Marker, Circle } from 'react-leaflet';
+import { Marker, Circle, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 
 // The Volterra Lime navigation chevron
@@ -36,7 +36,11 @@ export default function UserMarker({ location }) {
           }}
         />
       )}
-      <Marker position={position} icon={userIcon} zIndexOffset={1000} />
+      <Marker position={position} icon={userIcon} zIndexOffset={1000}>
+        <Tooltip direction="top" offset={[0, -10]} permanent={false} opacity={0.9}>
+          <span className="font-label-sm text-xs font-bold text-primary">You are here</span>
+        </Tooltip>
+      </Marker>
     </>
   );
 }

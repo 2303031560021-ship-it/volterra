@@ -23,7 +23,12 @@ export async function fetchStations(filters = {}) {
     
     // Normalize dataset
     cachedStations = parsed.data
-      .filter(row => row.latitude && row.longitude) // keep only valid coordinates
+      .filter(row => {
+        if (!row.latitude || !row.longitude) return false;
+        const lat = parseFloat(row.latitude);
+        const lng = parseFloat(row.longitude);
+        return !isNaN(lat) && !isNaN(lng);
+      }) // keep only valid coordinates
       .map((row, idx) => ({
         id: `st-${idx}`,
         name: row.station_name || 'Unknown Station',

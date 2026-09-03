@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center pt-40 pb-20 px-container-padding max-w-[1440px] mx-auto overflow-hidden">
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter w-full">
@@ -11,10 +15,10 @@ export default function HeroSection() {
             Site-selection intelligence for EV infrastructure investors and builders. Harness dynamic real-time data to validate your next strategic deployment.
           </p>
           <div className="flex flex-wrap items-center gap-5 mt-6">
-            <button className="bg-secondary-container text-primary px-8 py-4 rounded-full font-label-sm text-label-sm hover:bg-[#b5e05c] transition-colors flex items-center gap-2 shadow-sm font-bold">
+            <button onClick={() => navigate('/analysis')} className="bg-secondary-container text-primary px-8 py-4 rounded-full font-label-sm text-label-sm hover:bg-[#b5e05c] transition-colors flex items-center gap-2 shadow-sm font-bold">
               Start Location Analysis <span>→</span>
             </button>
-            <button className="px-8 py-4 rounded-full font-label-sm text-label-sm text-primary border border-primary/20 hover:border-primary/50 transition-colors bg-white/50 backdrop-blur-sm">
+            <button onClick={() => navigate('/explore')} className="px-8 py-4 rounded-full font-label-sm text-label-sm text-primary border border-primary/20 hover:border-primary/50 transition-colors bg-white/50 backdrop-blur-sm">
               Explore Charging Network
             </button>
           </div>

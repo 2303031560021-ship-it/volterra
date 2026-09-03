@@ -1,4 +1,4 @@
-export default function StationDetails({ station, onClose, distanceFromUserKm, routeData, isRouting, onGetDirections, onClearRoute }) {
+export default function StationDetails({ station, onClose, distanceFromUserKm, routeData, isRouting, isLocating, locationError, routeError, onGetDirections, onClearRoute }) {
   if (!station) return null;
 
   return (
@@ -156,32 +156,58 @@ export default function StationDetails({ station, onClose, distanceFromUserKm, r
           </div>
         )}
 
-        {/* Action Button */}
-        <div className="pt-6 mt-auto">
-          {routeData ? (
-            <button 
-              onClick={onClearRoute}
-              className="w-full py-4 rounded-xl border border-outline-variant/30 text-primary font-label-sm text-sm font-bold hover:bg-surface-container transition-colors"
-            >
-              Clear Route
-            </button>
-          ) : (
+        {/* Error States */}
+        {(locationError || routeError) && !routeData && (
+          <div className="pt-4 border-t border-outline-variant/10 mt-auto">
+            <div className="bg-error-container/50 border border-error/20 text-error px-4 py-3 rounded-xl font-body-sm mb-4">
+              <span className="material-symbols-outlined text-sm inline-block align-text-bottom mr-1">warning</span>
+              {locationError || routeError}
+            </div>
             <button 
               onClick={onGetDirections}
-              disabled={isRouting}
-              className="w-full bg-secondary-container text-primary py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-[#b5e05c] transition-colors shadow-sm flex items-center justify-center gap-2"
+              disabled={isLocating || isRouting}
+              className="w-full bg-surface-container text-primary py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-surface-container-high transition-colors shadow-sm flex items-center justify-center gap-2"
             >
-              {isRouting ? (
+              {(isLocating || isRouting) ? (
                 <>
                   <div className="w-4 h-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                  Calculating...
+                  {isLocating ? 'Finding your location...' : 'Calculating route...'}
                 </>
               ) : (
-                <>Get Directions →</>
+                <>Try Again</>
               )}
             </button>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Action Button (Normal State) */}
+        {!locationError && !routeError && (
+          <div className="pt-6 mt-auto">
+            {routeData ? (
+              <button 
+                onClick={onClearRoute}
+                className="w-full py-4 rounded-xl border border-outline-variant/30 text-primary font-label-sm text-sm font-bold hover:bg-surface-container transition-colors"
+              >
+                Close Directions
+              </button>
+            ) : (
+              <button 
+                onClick={onGetDirections}
+                disabled={isLocating || isRouting}
+                className="w-full bg-secondary-container text-primary py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-[#b5e05c] transition-colors shadow-sm flex items-center justify-center gap-2"
+              >
+                {(isLocating || isRouting) ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                    {isLocating ? 'Finding your location...' : 'Calculating route...'}
+                  </>
+                ) : (
+                  <>Get Directions →</>
+                )}
+              </button>
+            )}
+          </div>
+        )}
 
       </div>
     </div>

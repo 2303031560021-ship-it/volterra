@@ -28,10 +28,13 @@ export default function ExploreNetwork() {
   // Routing State
   const [routeData, setRouteData] = useState(null);
   const [isRouting, setIsRouting] = useState(false);
+  const [routeError, setRouteError] = useState(null);
   
-  // Clear route if user selects a different station
+  // Clear route and errors if user selects a different station
   useEffect(() => {
     setRouteData(null);
+    setRouteError(null);
+    setLocationError(null);
   }, [selectedStation?.id]);
   
   // Ref for the watcher if we want to implement live updates later (currently not actively watching to save battery, just locating once or on demand)
@@ -119,13 +122,14 @@ export default function ExploreNetwork() {
 
   // Handle Route Calculation
   const handleGetDirections = async () => {
+    setRouteError(null);
     let currentLoc = userLocation;
     
     if (!currentLoc) {
       try {
         currentLoc = await requestLocation();
       } catch (err) {
-        return; // Error already handled in requestLocation
+        return; // Error already handled in requestLocation and set in locationError
       }
     }
 
@@ -136,11 +140,21 @@ export default function ExploreNetwork() {
     try {
       const startCoords = [currentLoc.lat, currentLoc.lng];
       const endCoords = selectedStation.coordinates;
+
+      const isValidLat = (lat) => lat >= -90 && lat <= 90;
+      const isValidLng = (lng) => lng >= -180 && lng <= 180;
+
+      if (!isValidLat(startCoords[0]) || !isValidLng(startCoords[1]) || 
+          !isValidLat(endCoords[0]) || !isValidLng(endCoords[1])) {
+        setRouteError("Invalid coordinates detected. Cannot calculate route.");
+        setIsRouting(false);
+        return;
+      }
       
       const route = await getRoute(startCoords, endCoords);
       setRouteData(route);
     } catch (err) {
-      alert("Unable to calculate a route right now. Please try again.");
+      setRouteError("Unable to calculate a route right now. Please try again.");
     } finally {
       setIsRouting(false);
     }
@@ -261,6 +275,9 @@ export default function ExploreNetwork() {
                   distanceFromUserKm={distanceFromUserKm}
                   routeData={routeData}
                   isRouting={isRouting}
+                  isLocating={isLocating}
+                  locationError={locationError}
+                  routeError={routeError}
                   onGetDirections={handleGetDirections}
                   onClearRoute={handleClearRoute}
                 />
