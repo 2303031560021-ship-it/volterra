@@ -1,5 +1,4 @@
-import { useState, useMemo } from 'react';
-import { analyzeCandidate } from '../../services/analysisEngine';
+import { useState } from 'react';
 import AlternativeAreas from './AlternativeAreas';
 import { MapContainer, TileLayer, Circle, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -24,15 +23,10 @@ const stationIcon = L.divIcon({
   iconAnchor: [6, 6],
 });
 
-export default function AnalysisDashboard({ params, allStations, onEdit }) {
+export default function AnalysisDashboard({ params, analysisResult, allStations, onEdit, onGetDashboard }) {
   const [showAlternatives, setShowAlternatives] = useState(false);
 
-  // Compute the main analysis once
-  const analysis = useMemo(() => {
-    return analyzeCandidate(params.candidate, params, allStations);
-  }, [params, allStations]);
-
-  const { candidate, parameters, factors, signal, relevantStations, nearbyCount } = analysis;
+  const { candidate, parameters, factors, signal, relevantStations, nearbyCount } = analysisResult;
 
   if (showAlternatives) {
     return (
@@ -55,7 +49,7 @@ export default function AnalysisDashboard({ params, allStations, onEdit }) {
       <div className="flex justify-between items-start mb-12 pb-6 border-b border-outline-variant/20">
         <div>
           <span className="font-label-sm text-[11px] uppercase tracking-widest text-on-surface-variant font-bold block mb-1">Location Intelligence</span>
-          <h1 className="font-headline-md text-2xl md:text-3xl text-primary">{candidate.name || 'Selected Area'}</h1>
+          <h1 className="font-headline-md text-2xl md:text-3xl text-primary">{candidate.name?.displayName || (typeof candidate.name === 'string' ? candidate.name : 'Selected Area')}</h1>
           <p className="font-body-md text-sm text-on-surface-variant mt-1">
             {parameters.focus} · {parameters.radius} km
           </p>
@@ -177,12 +171,20 @@ export default function AnalysisDashboard({ params, allStations, onEdit }) {
             }
           </p>
         </div>
-        <button 
-          onClick={() => signal.color === 'green' ? onEdit() : setShowAlternatives(true)}
-          className="whitespace-nowrap bg-[#101A18] text-white px-8 py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-[#101A18]/90 transition-colors shadow-sm"
-        >
-          {signal.color === 'green' ? 'Continue evaluating →' : 'Find 3 other areas →'}
-        </button>
+        <div className="flex flex-col sm:flex-row md:flex-col gap-3">
+          <button 
+            onClick={onGetDashboard}
+            className="whitespace-nowrap bg-secondary-container text-primary px-8 py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-[#b5e05c] transition-colors shadow-sm text-center"
+          >
+            Get Dashboard →
+          </button>
+          <button 
+            onClick={() => signal.color === 'green' ? onEdit() : setShowAlternatives(true)}
+            className="whitespace-nowrap bg-[#101A18] text-white px-8 py-4 rounded-xl font-label-sm text-sm font-bold hover:bg-[#101A18]/90 transition-colors shadow-sm text-center"
+          >
+            {signal.color === 'green' ? 'Continue evaluating →' : 'Find 3 other areas →'}
+          </button>
+        </div>
       </div>
 
       {/* G. MORE DETAILS */}

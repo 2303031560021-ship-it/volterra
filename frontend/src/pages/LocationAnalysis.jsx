@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import AnalysisInputPanel from '../components/analysis/AnalysisInputPanel';
 import AnalysisDashboard from '../components/analysis/AnalysisDashboard';
+import DecisionDashboard from '../components/analysis/DecisionDashboard';
+import { analyzeCandidate } from '../services/analysisEngine';
 import { fetchStations } from '../services/api';
 
 export default function LocationAnalysis() {
-  const [viewState, setViewState] = useState('INPUT'); // 'INPUT', 'ANALYZING', 'DASHBOARD'
+  const [viewState, setViewState] = useState('INPUT'); // 'INPUT', 'ANALYZING', 'RESULT', 'DECISION_DASHBOARD'
   const [analysisState, setAnalysisState] = useState({
     candidate: null,
     radius: 5,
@@ -12,6 +14,7 @@ export default function LocationAnalysis() {
     minPower: 'Any'
   });
   
+  const [analysisResult, setAnalysisResult] = useState(null);
   const [allStations, setAllStations] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   
@@ -37,12 +40,19 @@ export default function LocationAnalysis() {
     
     // Simulate short transition for visual polish
     setTimeout(() => {
-      setViewState('DASHBOARD');
+      // Compute the analysis once, ensuring a single source of truth
+      const result = analyzeCandidate(params.candidate, params, allStations);
+      setAnalysisResult(result);
+      setViewState('RESULT');
     }, 1500);
   };
 
   const handleEditAnalysis = () => {
     setViewState('INPUT');
+  };
+
+  const handleGetDashboard = () => {
+    setViewState('DECISION_DASHBOARD');
   };
 
   return (
@@ -69,11 +79,22 @@ export default function LocationAnalysis() {
         </div>
       )}
       
-      {viewState === 'DASHBOARD' && (
+      {viewState === 'RESULT' && analysisResult && (
         <AnalysisDashboard 
           params={analysisState} 
+          analysisResult={analysisResult}
           allStations={allStations}
           onEdit={handleEditAnalysis}
+          onGetDashboard={handleGetDashboard}
+        />
+      )}
+
+      {viewState === 'DECISION_DASHBOARD' && analysisResult && (
+        <DecisionDashboard 
+          params={analysisState} 
+          analysisResult={analysisResult}
+          allStations={allStations}
+          onBack={() => setViewState('RESULT')}
         />
       )}
     </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -45,10 +45,47 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="hidden md:flex items-center gap-10">
-        <Link className="text-primary dark:text-secondary-fixed font-bold border-b-2 border-secondary-container font-label-sm text-label-sm hover:text-secondary-container transition-colors duration-300 pb-1" to="/">Home</Link>
-        <Link className="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1" to="/explore">Explore Stations</Link>
-        <Link className="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1" to="/analysis">Location Analysis</Link>
-        <Link className="text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1" to="/about">About</Link>
+        <NavLink 
+          to="/" 
+          end
+          className={({ isActive }) => 
+            isActive 
+              ? "text-primary dark:text-secondary-fixed font-bold border-b-2 border-secondary-container font-label-sm text-label-sm hover:text-secondary-container transition-colors duration-300 pb-1"
+              : "text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1"
+          }
+        >
+          Home
+        </NavLink>
+        <NavLink 
+          to="/explore"
+          className={({ isActive }) => 
+            isActive 
+              ? "text-primary dark:text-secondary-fixed font-bold border-b-2 border-secondary-container font-label-sm text-label-sm hover:text-secondary-container transition-colors duration-300 pb-1"
+              : "text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1"
+          }
+        >
+          Explore Stations
+        </NavLink>
+        <NavLink 
+          to="/analysis"
+          className={({ isActive }) => 
+            isActive 
+              ? "text-primary dark:text-secondary-fixed font-bold border-b-2 border-secondary-container font-label-sm text-label-sm hover:text-secondary-container transition-colors duration-300 pb-1"
+              : "text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1"
+          }
+        >
+          Location Analysis
+        </NavLink>
+        <NavLink 
+          to="/about"
+          className={({ isActive }) => 
+            isActive 
+              ? "text-primary dark:text-secondary-fixed font-bold border-b-2 border-secondary-container font-label-sm text-label-sm hover:text-secondary-container transition-colors duration-300 pb-1"
+              : "text-on-surface-variant dark:text-outline-variant font-label-sm text-label-sm hover:text-primary transition-colors duration-300 pb-1"
+          }
+        >
+          About
+        </NavLink>
       </div>
       <div className="flex items-center gap-4">
         <Link

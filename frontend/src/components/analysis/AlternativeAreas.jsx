@@ -63,7 +63,7 @@ export default function AlternativeAreas({ params, allStations, onBack, original
 
       <div className="mb-12">
         <span className="font-label-sm text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2 block">Location Intelligence</span>
-        <h1 className="font-headline-md text-3xl md:text-4xl text-primary tracking-tight">3 areas worth checking</h1>
+        <h1 className="font-headline-md text-3xl md:text-4xl text-primary tracking-tight">{topAreas.length} {topAreas.length === 1 ? 'area' : 'areas'} worth checking</h1>
         <p className="font-body-md text-on-surface-variant mt-3 max-w-2xl">
           Based on the same requirements you entered.
         </p>
@@ -89,7 +89,7 @@ export default function AlternativeAreas({ params, allStations, onBack, original
                 <div className="flex gap-4">
                   <span className="font-label-sm text-xs bg-primary text-[#C7F36B] px-2 py-1 h-fit rounded font-bold">0{idx + 1}</span>
                   <div>
-                    <h3 className="font-headline-md text-lg text-primary mb-1">{area.candidate.name}</h3>
+                    <h3 className="font-headline-md text-lg text-primary mb-1">{area.candidate.name?.displayName || area.candidate.name}</h3>
                     <span className="font-label-sm text-[10px] font-bold text-primary uppercase tracking-widest mb-2 block">
                       {area.signal.headline}
                     </span>

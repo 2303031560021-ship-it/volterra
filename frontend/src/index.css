@@ -131,3 +131,31 @@
     opacity: 0.8;
   }
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  nav, footer, .navbar {
+    display: none !important;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .break-before-page {
+    break-before: page;
+    page-break-before: always;
+  }
+  .pdf-page {
+    width: 100%;
+    max-width: 100%;
+  }
+}
