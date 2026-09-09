@@ -5,8 +5,53 @@ Implements VOLTERRA's analytical model comparing candidate locations
 against real charging stations from final_india_dataset.csv.
 """
 
+import json
 import math
+from pathlib import Path
 from backend.data_loader import get_loader
+
+
+LAND_GEOMETRY_PATH = Path(__file__).with_name('india_land.geojson')
+_LAND_POLYGONS = None
+
+
+def _load_land_polygons():
+    global _LAND_POLYGONS
+    if _LAND_POLYGONS is None:
+        with LAND_GEOMETRY_PATH.open(encoding='utf-8') as geometry_file:
+            geometry = json.load(geometry_file)
+        _LAND_POLYGONS = []
+        for feature in geometry.get('features', []):
+            feature_geometry = feature.get('geometry') or {}
+            coordinates = feature_geometry.get('coordinates', [])
+            if feature_geometry.get('type') == 'Polygon':
+                _LAND_POLYGONS.append(coordinates)
+            elif feature_geometry.get('type') == 'MultiPolygon':
+                _LAND_POLYGONS.extend(coordinates)
+    return _LAND_POLYGONS
+
+
+def _point_in_ring(lat, lng, ring):
+    inside = False
+    for index, point in enumerate(ring):
+        previous = ring[index - 1]
+        point_lng, point_lat = point
+        previous_lng, previous_lat = previous
+        if (point_lat > lat) != (previous_lat > lat):
+            crossing_lng = (previous_lng - point_lng) * (lat - point_lat) / (previous_lat - point_lat) + point_lng
+            if lng < crossing_lng:
+                inside = not inside
+    return inside
+
+
+def is_land_coordinate(lat, lng):
+    """Return whether a coordinate falls inside the local India land boundary."""
+    for polygon in _load_land_polygons():
+        if _point_in_ring(lat, lng, polygon[0]) and not any(
+            _point_in_ring(lat, lng, hole) for hole in polygon[1:]
+        ):
+            return True
+    return False
 
 def get_sector(c_lat, c_lng, s_lat, s_lng):
     d_lat = s_lat - c_lat
@@ -336,6 +381,8 @@ def find_alternative_areas(candidate, parameters):
 
     evaluated = []
     for g_lat, g_lng, dist_orig in candidates_grid:
+        if not is_land_coordinate(g_lat, g_lng):
+            continue
         cand_obj = {
             'lat': round(g_lat, 6),
             'lng': round(g_lng, 6),

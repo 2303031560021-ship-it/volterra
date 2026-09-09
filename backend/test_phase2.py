@@ -1,5 +1,6 @@
 import csv
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
@@ -7,7 +8,7 @@ from unittest.mock import patch
 
 from tornado.testing import AsyncHTTPTestCase
 
-from backend.analysis_service import analyze_location
+from backend.analysis_service import analyze_location, find_alternative_areas, is_land_coordinate
 from backend.data_loader import DataLoader
 from backend.server import make_app
 
@@ -124,6 +125,45 @@ class AnalysisContractTests(unittest.TestCase):
         self.assertIn('factors', result)
         self.assertEqual(result['factors']['mix']['text'], 'Mixed charging types nearby')
         self.assertIn('data_lineage', result)
+
+
+class AlternativeAreaLandValidationTests(unittest.TestCase):
+    class EmptyLoader:
+        summary = {'source': 'Test source', 'data_date': '2025-10-26', 'total_stations': 0}
+
+        def haversine(self, lat1, lng1, lat2, lng2):
+            d_lat = math.radians(lat2 - lat1)
+            d_lng = math.radians(lng2 - lng1)
+            value = (
+                math.sin(d_lat / 2) ** 2
+                + math.cos(math.radians(lat1))
+                * math.cos(math.radians(lat2))
+                * math.sin(d_lng / 2) ** 2
+            )
+            return 6371 * 2 * math.atan2(math.sqrt(value), math.sqrt(1 - value))
+
+        def query_radius(self, **kwargs):
+            return [], []
+
+    def assert_land_alternatives(self, lat, lng):
+        with patch('backend.analysis_service.get_loader', return_value=self.EmptyLoader()):
+            alternatives = find_alternative_areas(
+                {'lat': lat, 'lng': lng},
+                {'radius': 5, 'focus': 'Any', 'minPower': 'Any'},
+            )
+        self.assertEqual(len(alternatives), 3)
+        for alternative in alternatives:
+            point = alternative['candidate']
+            self.assertTrue(is_land_coordinate(point['lat'], point['lng']))
+            self.assertIn('gapScore', alternative['signal'])
+            self.assertIn('evidence', alternative['signal'])
+            self.assertIn('factors', alternative)
+
+    def test_chennai_alternatives_are_on_land(self):
+        self.assert_land_alternatives(13.0827, 80.2707)
+
+    def test_inland_alternatives_keep_expected_count_and_fields(self):
+        self.assert_land_alternatives(21.1458, 79.0882)
 
 
 class AlternativeAreaEndpointTests(AsyncHTTPTestCase):
