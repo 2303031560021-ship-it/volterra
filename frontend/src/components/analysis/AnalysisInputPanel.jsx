@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Circle, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -34,6 +34,28 @@ export default function AnalysisInputPanel({ initialState, onAnalyze, isLoadingD
   const [searchQuery, setSearchQuery] = useState(initialState.candidate?.name || '');
   const [isSearching, setIsSearching] = useState(false);
   const [nearbyPreview, setNearbyPreview] = useState([]);
+  const [isCategoryInfoOpen, setIsCategoryInfoOpen] = useState(false);
+  const categoryInfoRef = useRef(null);
+
+  useEffect(() => {
+    if (!isCategoryInfoOpen) return undefined;
+
+    const handleOutsideClick = (event) => {
+      if (categoryInfoRef.current && !categoryInfoRef.current.contains(event.target)) {
+        setIsCategoryInfoOpen(false);
+      }
+    };
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') setIsCategoryInfoOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isCategoryInfoOpen]);
   
   // Load real nearby stations dynamically when candidate or parameters change
   useEffect(() => {
@@ -151,7 +173,37 @@ export default function AnalysisInputPanel({ initialState, onAnalyze, isLoadingD
 
           <div className="space-y-3">
             <div>
-              <label className="font-label-sm font-bold text-primary text-sm">What are you evaluating?</label>
+              <div className="flex items-center gap-2">
+                <label className="font-label-sm font-bold text-primary text-sm">What are you evaluating?</label>
+                <span ref={categoryInfoRef} className="relative inline-flex">
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoryInfoOpen((open) => !open)}
+                    className="flex h-5 w-5 items-center justify-center rounded-full text-on-surface-variant/70 transition-colors hover:bg-surface-container hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    aria-label="Charging category information"
+                    aria-expanded={isCategoryInfoOpen}
+                    aria-controls="charging-category-information"
+                  >
+                    <span className="material-symbols-outlined text-[17px]">info</span>
+                  </button>
+                  {isCategoryInfoOpen && (
+                    <div
+                      id="charging-category-information"
+                      role="dialog"
+                      aria-label="Charging categories"
+                      className="absolute left-0 top-7 z-30 w-[min(20rem,calc(100vw-3rem))] rounded-2xl border border-outline-variant/20 bg-white p-4 text-left shadow-xl"
+                    >
+                      <h3 className="font-label-sm text-xs font-bold uppercase tracking-wider text-primary">Charging categories</h3>
+                      <div className="mt-3 space-y-3 text-xs leading-relaxed text-on-surface-variant">
+                        <p><strong className="text-primary">AC</strong> includes records classified as AC, such as LEV AC, Type-II AC, and Bharat AC-001.</p>
+                        <p><strong className="text-primary">DC</strong> includes records classified as DC, such as CCS, CCS-II, Bharat DC-001, and combo/CHAdeMO types.</p>
+                        <p><strong className="text-primary">High-Power DC</strong> is DC infrastructure with reported power of at least 50 kW.</p>
+                        <p className="border-t border-outline-variant/15 pt-3">Categories come from charging information reported in the India EV charging network dataset. Minimum Power filters reported power ratings separately.</p>
+                      </div>
+                    </div>
+                  )}
+                </span>
+              </div>
               <p className="text-xs text-on-surface-variant mt-1">The selected charging focus changes the infrastructure analysis.</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

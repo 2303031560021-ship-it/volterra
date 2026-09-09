@@ -150,10 +150,10 @@ export default function ExploreMap({
 
       <div className="absolute bottom-4 left-4 z-[500] pointer-events-none rounded-lg border border-outline-variant/20 bg-white/90 px-3 py-2 shadow-sm backdrop-blur-md">
         <div className="font-label-sm text-[10px] font-bold tracking-wide text-primary">
-          Data status: Validation in progress
+          Data status: Validated dataset
         </div>
         <div className="font-body-sm text-[10px] text-on-surface-variant">
-          BEE dataset · 26 October 2025
+          India EV charging network · 26 October 2025
         </div>
       </div>
 
