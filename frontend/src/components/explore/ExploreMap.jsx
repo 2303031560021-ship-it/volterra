@@ -29,7 +29,7 @@ function MapController({ routeCoordinates, searchQuery, searchBounds, searchPosi
   const lastSearchPositionRef = useRef(searchPositionKey);
 
   useEffect(() => {
-    // 1. If we have a route, fit bounds to the route
+    // Fit bounds when a route is calculated.
     if (routeCoordinates && routeCoordinates.length > 0) {
       const bounds = L.latLngBounds(routeCoordinates);
       map.fitBounds(bounds, {
@@ -38,10 +38,11 @@ function MapController({ routeCoordinates, searchQuery, searchBounds, searchPosi
         animate: true,
         duration: 0.8
       });
-      return;
     }
+  }, [routeCoordinates, map]);
 
-    // 2. Position once after an explicit search selection completes.
+  useEffect(() => {
+    // Position once after an explicit search selection completes.
     if (searchPositionKey !== lastSearchPositionRef.current && searchBounds && searchBounds.length === 4) {
       lastSearchPositionRef.current = searchPositionKey;
       lastSearchRef.current = searchQuery;
@@ -55,17 +56,15 @@ function MapController({ routeCoordinates, searchQuery, searchBounds, searchPosi
       return;
     }
 
-    // 3. When search is cleared, restore default pan-India view
+    // When search is cleared, restore default pan-India view.
     if (!searchQuery && lastSearchRef.current) {
       lastSearchRef.current = '';
       map.setView([21.5, 78.96], 5, {
         animate: true,
         duration: 0.8
       });
-      return;
     }
-
-  }, [routeCoordinates, searchQuery, searchBounds, searchPositionKey, map]);
+  }, [searchQuery, searchBounds, searchPositionKey, map]);
 
   return null;
 }
@@ -150,10 +149,10 @@ export default function ExploreMap({
 
       <div className="absolute bottom-4 left-4 z-[500] pointer-events-none rounded-lg border border-outline-variant/20 bg-white/90 px-3 py-2 shadow-sm backdrop-blur-md">
         <div className="font-label-sm text-[10px] font-bold tracking-wide text-primary">
-          Data status: Validated dataset
+          Data status: Under development
         </div>
         <div className="font-body-sm text-[10px] text-on-surface-variant">
-          India EV charging network · 26 October 2025
+          Coverage may be incomplete. Some stations or locations may not yet be available.
         </div>
       </div>
 
