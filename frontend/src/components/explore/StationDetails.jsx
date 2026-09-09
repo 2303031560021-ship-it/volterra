@@ -59,26 +59,24 @@ export default function StationDetails({ station, onClose, distanceFromUserKm, r
           </div>
         )}
 
-        {station.connectors && station.connectors.length > 0 && (
+        {station.connector_rating && (
           <div>
             <span className="font-label-sm text-xs text-on-surface-variant uppercase tracking-wider block mb-1">
-              Connectors
+              Connector Rating
             </span>
             <div className="font-body-md text-primary flex gap-2 flex-wrap">
-              {station.connectors.map(c => (
-                <span key={c} className="border border-outline-variant/30 px-3 py-1 rounded-full text-sm font-medium">{c}</span>
-              ))}
+              <span className="border border-outline-variant/30 px-3 py-1 rounded-full text-sm font-medium">{station.connector_rating}</span>
             </div>
           </div>
         )}
 
-        {station.points && (
+        {station.num_connectors !== null && station.num_connectors !== undefined && (
           <div>
             <span className="font-label-sm text-xs text-on-surface-variant uppercase tracking-wider block mb-1">
               Charging Points
             </span>
             <div className="font-headline-md text-xl text-primary">
-              {station.points}
+              {station.num_connectors}
             </div>
           </div>
         )}

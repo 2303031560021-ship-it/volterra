@@ -40,8 +40,12 @@ export default function DecisionDashboard({ analysisResult, params, allStations,
   const typeLabel = parameters.focus === 'Any' ? 'chargers' : `${parameters.focus} chargers`;
 
   // Calculate analytics
-  const acCount = relevantStations.filter(s => s.ac_dc === 'AC' || s.connector_type?.toLowerCase().includes('ac')).length;
-  const dcCount = relevantStations.filter(s => s.ac_dc === 'DC' || s.connector_type?.toLowerCase().includes('dc')).length;
+  const hasChargerType = (station, type) => (
+    station.charger_types?.includes(type) ||
+    (station.ac_dc || '').split(';').map(value => value.trim()).includes(type)
+  );
+  const acCount = relevantStations.filter(station => hasChargerType(station, 'AC')).length;
+  const dcCount = relevantStations.filter(station => hasChargerType(station, 'DC')).length;
   
   // Group by operators
   const operatorCounts = relevantStations.reduce((acc, st) => {

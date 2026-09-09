@@ -23,7 +23,7 @@ const stationIcon = L.divIcon({
   iconAnchor: [6, 6],
 });
 
-export default function AnalysisDashboard({ params, analysisResult, allStations, onEdit, onGetDashboard }) {
+export default function AnalysisDashboard({ params, analysisResult, onEdit, onGetDashboard }) {
   const [showAlternatives, setShowAlternatives] = useState(false);
 
   const { candidate, parameters, factors, signal, relevantStations, nearbyCount } = analysisResult;
@@ -32,7 +32,6 @@ export default function AnalysisDashboard({ params, analysisResult, allStations,
     return (
       <AlternativeAreas 
         params={parameters} 
-        allStations={allStations} 
         onBack={() => setShowAlternatives(false)} 
         originalCandidate={candidate}
       />
@@ -166,8 +165,8 @@ export default function AnalysisDashboard({ params, analysisResult, allStations,
             {signal.color === 'green' 
               ? "Continue evaluating this area."
               : signal.color === 'yellow'
-              ? "Compare this area with other parts of Surat."
-              : "Other parts of Surat may be more worth comparing."
+              ? "Compare this area with other parts of the region."
+              : "Other nearby locations may show a stronger charging gap."
             }
           </p>
         </div>

@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AnalysisInputPanel from '../components/analysis/AnalysisInputPanel';
 import AnalysisDashboard from '../components/analysis/AnalysisDashboard';
 import DecisionDashboard from '../components/analysis/DecisionDashboard';
-import { analyzeCandidate } from '../services/analysisEngine';
-import { fetchStations } from '../services/api';
+import { analyzeLocation } from '../services/api';
 
 export default function LocationAnalysis() {
   const [viewState, setViewState] = useState('INPUT'); // 'INPUT', 'ANALYZING', 'RESULT', 'DECISION_DASHBOARD'
@@ -15,36 +14,23 @@ export default function LocationAnalysis() {
   });
   
   const [analysisResult, setAnalysisResult] = useState(null);
-  const [allStations, setAllStations] = useState([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  
-  // Load stations on mount
-  useEffect(() => {
-    async function loadData() {
-      setIsLoadingData(true);
-      try {
-        const data = await fetchStations();
-        setAllStations(data);
-      } catch (err) {
-        console.error("Failed to load stations for analysis", err);
-      } finally {
-        setIsLoadingData(false);
-      }
-    }
-    loadData();
-  }, []);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [analysisError, setAnalysisError] = useState(null);
 
-  const handleAnalyze = (params) => {
+  const handleAnalyze = async (params) => {
     setAnalysisState(params);
     setViewState('ANALYZING');
+    setAnalysisError(null);
     
-    // Simulate short transition for visual polish
-    setTimeout(() => {
-      // Compute the analysis once, ensuring a single source of truth
-      const result = analyzeCandidate(params.candidate, params, allStations);
+    try {
+      const result = await analyzeLocation(params.candidate, params);
       setAnalysisResult(result);
       setViewState('RESULT');
-    }, 1500);
+    } catch (err) {
+      console.error("Backend analysis failed:", err);
+      setAnalysisError("Unable to analyze this location. Please ensure the backend service is running and try again.");
+      setViewState('INPUT');
+    }
   };
 
   const handleEditAnalysis = () => {
@@ -57,12 +43,20 @@ export default function LocationAnalysis() {
 
   return (
     <div className="min-h-screen pb-20 pt-28">
+      {analysisError && (
+        <div className="max-w-[1440px] mx-auto px-container-padding mb-6">
+          <div className="bg-red-500/10 border border-red-500/20 text-red-600 px-6 py-4 rounded-2xl flex items-center justify-between">
+            <span>{analysisError}</span>
+            <button onClick={() => setAnalysisError(null)} className="font-bold underline ml-4">Dismiss</button>
+          </div>
+        </div>
+      )}
+
       {viewState === 'INPUT' && (
         <AnalysisInputPanel 
           initialState={analysisState}
           onAnalyze={handleAnalyze} 
           isLoadingData={isLoadingData} 
-          stations={allStations}
         />
       )}
       
@@ -74,7 +68,7 @@ export default function LocationAnalysis() {
           </div>
           <h2 className="font-headline-md text-2xl text-primary mb-2">Analyzing location...</h2>
           <p className="font-body-md text-on-surface-variant max-w-md mx-auto">
-            Mapping nearby infrastructure and evaluating the charging landscape.
+            Evaluating existing charging infrastructure around candidate site against real India-wide data.
           </p>
         </div>
       )}
@@ -83,7 +77,6 @@ export default function LocationAnalysis() {
         <AnalysisDashboard 
           params={analysisState} 
           analysisResult={analysisResult}
-          allStations={allStations}
           onEdit={handleEditAnalysis}
           onGetDashboard={handleGetDashboard}
         />
@@ -93,7 +86,6 @@ export default function LocationAnalysis() {
         <DecisionDashboard 
           params={analysisState} 
           analysisResult={analysisResult}
-          allStations={allStations}
           onBack={() => setViewState('RESULT')}
         />
       )}

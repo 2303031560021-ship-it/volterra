@@ -1,15 +1,33 @@
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import { useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, Polyline, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { createStationIcon } from './StationMarker';
 import UserMarker from './UserMarker';
 import UserLocationControl from './UserLocationControl';
 
-// Helper component to manage map view bounds and centering
-function MapController({ stations, selectedStation, routeCoordinates, userLocation }) {
+// Tracks viewport bounds and zoom changes during user pan and zoom
+function ViewportTracker({ onViewportChange }) {
+  const map = useMapEvents({
+    moveend: () => {
+      if (onViewportChange) {
+        const b = map.getBounds();
+        onViewportChange({
+          bounds: [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()],
+          zoom: map.getZoom()
+        });
+      }
+    }
+  });
+  return null;
+}
+
+// Manages intentional centering (route, selection, search) without fighting user pan
+function MapController({ routeCoordinates, searchQuery, searchBounds, searchPositionKey }) {
   const map = useMap();
-  
+  const lastSearchRef = useRef(searchQuery);
+  const lastSearchPositionRef = useRef(searchPositionKey);
+
   useEffect(() => {
     // 1. If we have a route, fit bounds to the route
     if (routeCoordinates && routeCoordinates.length > 0) {
@@ -23,54 +41,56 @@ function MapController({ stations, selectedStation, routeCoordinates, userLocati
       return;
     }
 
-    // 2. If a specific station is selected without a route, zoom to it
-    if (selectedStation && selectedStation.coordinates) {
-      map.setView(selectedStation.coordinates, 16, {
+    // 2. Position once after an explicit search selection completes.
+    if (searchPositionKey !== lastSearchPositionRef.current && searchBounds && searchBounds.length === 4) {
+      lastSearchPositionRef.current = searchPositionKey;
+      lastSearchRef.current = searchQuery;
+      const [minLat, minLon, maxLat, maxLon] = searchBounds;
+      map.fitBounds([[minLat, minLon], [maxLat, maxLon]], {
+        padding: [50, 50],
+        maxZoom: 15,
         animate: true,
-        duration: 0.5
+        duration: 0.8
       });
       return;
     }
 
-    // 3. Otherwise, fit bounds to all visible stations
-    if (stations && stations.length > 0) {
-      const bounds = L.latLngBounds(stations.map(s => s.coordinates));
-      
-      // If user location exists, include it in the initial framing
-      if (userLocation && userLocation.lat && userLocation.lng) {
-        bounds.extend([userLocation.lat, userLocation.lng]);
-      }
-      
-      map.fitBounds(bounds, {
-        padding: [50, 50],
-        maxZoom: 14,
+    // 3. When search is cleared, restore default pan-India view
+    if (!searchQuery && lastSearchRef.current) {
+      lastSearchRef.current = '';
+      map.setView([21.5, 78.96], 5, {
         animate: true,
-        duration: 0.5
+        duration: 0.8
       });
+      return;
     }
-  }, [selectedStation, stations, routeCoordinates, userLocation, map]);
-  
+
+  }, [routeCoordinates, searchQuery, searchBounds, searchPositionKey, map]);
+
   return null;
 }
 
-export default function ExploreMap({ 
-  stations, 
-  selectedStationId, 
+export default function ExploreMap({
+  stations,
+  selectedStationId,
   onStationSelect,
   userLocation,
   isLocating,
   onLocateUser,
   onRecenterUser,
-  routeCoordinates 
+  routeCoordinates,
+  searchQuery,
+  searchBounds,
+  searchPositionKey,
+  onViewportChange
 }) {
-  // A temporary fallback center until the bounds fit triggers
-  const fallbackCenter = stations.length > 0 ? stations[0].coordinates : [21.1702, 72.8311]; 
+  const INDIA_CENTER = [21.5, 78.96];
 
   return (
     <div className="w-full h-full rounded-[32px] overflow-hidden border border-outline-variant/20 shadow-xl shadow-primary/5 bg-surface-container relative z-0">
-      <MapContainer 
-        center={fallbackCenter} 
-        zoom={11} 
+      <MapContainer
+        center={INDIA_CENTER}
+        zoom={5}
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
@@ -81,16 +101,16 @@ export default function ExploreMap({
 
         {/* Route Polyline */}
         {routeCoordinates && routeCoordinates.length > 0 && (
-          <Polyline 
-            positions={routeCoordinates} 
-            pathOptions={{ 
-              color: '#101A18', 
-              weight: 4, 
-              dashArray: '10, 10', 
-              lineCap: 'round', 
+          <Polyline
+            positions={routeCoordinates}
+            pathOptions={{
+              color: '#101A18',
+              weight: 4,
+              dashArray: '10, 10',
+              lineCap: 'round',
               lineJoin: 'round',
-              opacity: 0.8 
-            }} 
+              opacity: 0.8
+            }}
           />
         )}
 
@@ -110,20 +130,32 @@ export default function ExploreMap({
         <UserMarker location={userLocation} />
 
         {/* UI Controls overlay */}
-        <UserLocationControl 
+        <UserLocationControl
           isLocating={isLocating}
           hasLocation={!!userLocation}
+          location={userLocation}
           onLocate={onLocateUser}
           onRecenter={onRecenterUser}
         />
 
-        <MapController 
-          stations={stations}
-          selectedStation={stations.find(s => s.id === selectedStationId)} 
+        <MapController
           routeCoordinates={routeCoordinates}
-          userLocation={userLocation}
+          searchQuery={searchQuery}
+          searchBounds={searchBounds}
+          searchPositionKey={searchPositionKey}
         />
+
+        <ViewportTracker onViewportChange={onViewportChange} />
       </MapContainer>
+
+      <div className="absolute bottom-4 left-4 z-[500] pointer-events-none rounded-lg border border-outline-variant/20 bg-white/90 px-3 py-2 shadow-sm backdrop-blur-md">
+        <div className="font-label-sm text-[10px] font-bold tracking-wide text-primary">
+          Data status: Validation in progress
+        </div>
+        <div className="font-body-sm text-[10px] text-on-surface-variant">
+          BEE dataset · 26 October 2025
+        </div>
+      </div>
 
       {/* Internal Map CSS overrides */}
       <style>{`
@@ -132,7 +164,7 @@ export default function ExploreMap({
           font-family: 'Inter', sans-serif;
         }
         .volterra-station-marker:hover {
-          transform: scale(1.2);
+          transform: scale(1.3);
           z-index: 1000 !important;
         }
         @keyframes pulse {

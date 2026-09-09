@@ -28,8 +28,12 @@ export default function AnalysisPdfReport({ analysisResult }) {
   const locName = candidate.name?.displayName || (typeof candidate.name === 'string' ? candidate.name : 'Selected Area');
 
   // Calculate analytics
-  const acCount = relevantStations.filter(s => s.ac_dc === 'AC' || s.connector_type?.toLowerCase().includes('ac')).length;
-  const dcCount = relevantStations.filter(s => s.ac_dc === 'DC' || s.connector_type?.toLowerCase().includes('dc')).length;
+  const hasChargerType = (station, type) => (
+    station.charger_types?.includes(type) ||
+    (station.ac_dc || '').split(';').map(value => value.trim()).includes(type)
+  );
+  const acCount = relevantStations.filter(station => hasChargerType(station, 'AC')).length;
+  const dcCount = relevantStations.filter(station => hasChargerType(station, 'DC')).length;
 
   const operatorCounts = relevantStations.reduce((acc, st) => {
     const op = st.operator || 'Unknown';

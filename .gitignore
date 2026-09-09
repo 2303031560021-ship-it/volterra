@@ -30,3 +30,25 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# VOLTERRA raw / intermediate data
+EV_PCS_Data_29277.pdf
+ocm_*.json
+ocm_*.csv
+
+# Backups
+*_backup.*
+*.bak
+
+# Intermediate datasets
+final_master_india_v2.csv
+final_india_exclusions.csv
+
+# Debug / inspection scripts
+debug_*.py
+inspect_*.py
+compare_*.py
+check_v2_quality.py
+
+# Scratch work
+scratch/

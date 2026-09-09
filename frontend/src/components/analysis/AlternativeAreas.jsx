@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { findAlternativeAreas } from '../../services/candidateSearch';
+import { analyzeLocation, fetchAlternativeAreas } from '../../services/api';
 import AnalysisDashboard from './AnalysisDashboard';
 import { MapContainer, TileLayer, Circle, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -18,24 +18,42 @@ const originalIcon = L.divIcon({
   iconAnchor: [6, 6],
 });
 
-export default function AlternativeAreas({ params, allStations, onBack, originalCandidate }) {
+export default function AlternativeAreas({ params, onBack, originalCandidate }) {
   const [isScanning, setIsScanning] = useState(true);
   const [topAreas, setTopAreas] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  const handleSelectArea = async (area) => {
+    setIsAnalyzing(true);
+    try {
+      const result = await analyzeLocation(area.candidate, params);
+      setSelectedAnalysis(result);
+    } catch (err) {
+      console.error("Failed to analyze alternative area:", err);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
     const scan = async () => {
       setIsScanning(true);
-      const results = await findAlternativeAreas(params, allStations);
-      if (isMounted) {
-        setTopAreas(results);
-        setIsScanning(false);
+      try {
+        const results = await fetchAlternativeAreas(originalCandidate, params);
+        if (isMounted) {
+          setTopAreas(results);
+          setIsScanning(false);
+        }
+      } catch (err) {
+        console.error("Failed to fetch alternative areas:", err);
+        if (isMounted) setIsScanning(false);
       }
     };
     scan();
     return () => { isMounted = false; };
-  }, [params, allStations]);
+  }, [params, originalCandidate]);
 
   if (selectedAnalysis) {
     return (
@@ -45,8 +63,8 @@ export default function AlternativeAreas({ params, allStations, onBack, original
           Back to Potential Areas
         </button>
         <AnalysisDashboard
-          params={{ ...params, candidate: selectedAnalysis.candidate }}
-          allStations={allStations}
+          params={selectedAnalysis.parameters}
+          analysisResult={selectedAnalysis}
           onEdit={onBack}
         />
       </div>
@@ -65,7 +83,7 @@ export default function AlternativeAreas({ params, allStations, onBack, original
         <span className="font-label-sm text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2 block">Location Intelligence</span>
         <h1 className="font-headline-md text-3xl md:text-4xl text-primary tracking-tight">{topAreas.length} {topAreas.length === 1 ? 'area' : 'areas'} worth checking</h1>
         <p className="font-body-md text-on-surface-variant mt-3 max-w-2xl">
-          Based on the same requirements you entered.
+          Alternative candidate zones based on infrastructure gaps in this region.
         </p>
       </div>
 
@@ -75,7 +93,7 @@ export default function AlternativeAreas({ params, allStations, onBack, original
             <div className="absolute inset-0 border-4 border-outline-variant/20 rounded-full"></div>
             <div className="absolute inset-0 border-4 border-t-primary rounded-full animate-spin"></div>
           </div>
-          <h2 className="font-headline-md text-xl text-primary">Scanning Surat...</h2>
+          <h2 className="font-headline-md text-xl text-primary">Scanning surrounding area...</h2>
         </div>
       ) : topAreas.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -94,14 +112,15 @@ export default function AlternativeAreas({ params, allStations, onBack, original
                       {area.signal.headline}
                     </span>
                     <p className="font-body-md text-sm text-primary mb-2">
-                      {area.factors.pressure.value} {area.factors.pressure.value === 1 ? (area.parameters.focus === 'Any' ? 'charger' : `${area.parameters.focus} charger`) : (area.parameters.focus === 'Any' ? 'chargers' : `${area.parameters.focus} chargers`)} nearby · {area.factors.access.nearestDistance ? `Nearest: ${area.factors.access.nearestDistance.toFixed(1)} km` : 'No similar charger found'}
+                      {area.nearbyCount} {area.nearbyCount === 1 ? (params.focus === 'Any' ? 'charger' : `${params.focus} charger`) : (params.focus === 'Any' ? 'chargers' : `${params.focus} chargers`)} nearby · {area.factors.access.nearestDistance ? `Nearest: ${area.factors.access.nearestDistance.toFixed(1)} km` : 'No similar charger found'}
                     </p>
                     <p className="font-body-md text-sm text-on-surface-variant mb-4">
-                      {area.signal.explanation}
+                      {area.signal.meaning || area.signal.primarySentence}
                     </p>
                     <button
-                      onClick={() => setSelectedAnalysis(area)}
-                      className="font-label-sm text-sm font-bold text-primary flex items-center gap-2 hover:text-[#b5e05c] transition-colors"
+                      onClick={() => handleSelectArea(area)}
+                      disabled={isAnalyzing}
+                      className="font-label-sm text-sm font-bold text-primary flex items-center gap-2 hover:text-[#b5e05c] transition-colors cursor-pointer"
                     >
                       View Analysis →
                     </button>
@@ -114,7 +133,7 @@ export default function AlternativeAreas({ params, allStations, onBack, original
           {/* Map (Right Column, ~60%, Sticky) */}
           <div className="col-span-1 lg:col-span-7 h-[500px] lg:h-[calc(100vh-140px)] lg:sticky lg:top-28 bg-surface-container rounded-[32px] overflow-hidden border border-outline-variant/20 relative">
             <MapContainer
-              center={[21.1702, 72.8311]}
+              center={[originalCandidate.lat, originalCandidate.lng]}
               zoom={11}
               style={{ height: '100%', width: '100%', zIndex: 1 }}
               zoomControl={false}

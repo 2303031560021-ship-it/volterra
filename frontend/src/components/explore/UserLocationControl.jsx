@@ -1,12 +1,23 @@
+import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 
 export default function UserLocationControl({ 
   onLocate, 
   isLocating, 
   hasLocation, 
-  onRecenter 
+  onRecenter,
+  location
 }) {
-  const map = useMap(); // Used to stop propagation if needed, but not strictly necessary for this UI layer since we position absolute outside MapContainer or inside custom container.
+  const map = useMap();
+
+  useEffect(() => {
+    if (!location || !Number.isFinite(location.lat) || !Number.isFinite(location.lng)) return;
+
+    map.flyTo([location.lat, location.lng], Math.max(map.getZoom(), 13), {
+      animate: true,
+      duration: 0.8
+    });
+  }, [location, map]);
   
   // Note: we'll actually use this component outside the MapContainer so it floats naturally,
   // or inside it using a standard leaflet portal. Given the user's styling constraints, 
