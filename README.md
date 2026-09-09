@@ -22,6 +22,10 @@ python -m backend.server
 
 The API listens on `http://127.0.0.1:8000`.
 
+For deployment, configure `CORS_ALLOWED_ORIGINS` as a comma-separated list of trusted frontend origins. Other optional controls include `HOST`, `PORT`, `REQUEST_BODY_LIMIT_BYTES`, `SEARCH_QUERY_MAX_LENGTH`, `RATE_LIMIT_REQUESTS`, `RATE_LIMIT_EXPENSIVE_REQUESTS`, and `API_WORKERS`. Set `ENABLE_HSTS=1` only when HTTPS is guaranteed by the deployment boundary.
+
+Place the API behind a production reverse proxy for TLS termination, external rate limiting, access logging, and additional security headers.
+
 ## Frontend setup
 
 ```powershell

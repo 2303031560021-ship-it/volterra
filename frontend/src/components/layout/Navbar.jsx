@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-
+import logo from '../../assets/logo_ev.png';
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -40,7 +40,7 @@ export default function Navbar() {
     <nav className={`${baseClasses} ${transitionClasses} ${transformClass}`}>
       <div className="flex items-center gap-4">
         <Link to="/" className="flex items-center gap-4">
-          <img alt="Volterra Brand Mark" className="h-8 w-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnwG2J9WIv421xrpPVY4q4IGz3_2VjWf5wpGBiOXei7Vh327euKIlMr2EvwJmBeCbgSV5iozCQXS9UTrXIlsj-a_GWdxHKl_aA9IjYJJLV2yo0iQJFLW06zqBe5vcEvxCwBxD-PSgKD-INduLr3GINxqhaxwdyJOwSmlqY_lP_USziMPSaDcL1pBuMDu003ZrTlMIQ1z7zzsVja8sNzS-XR_JxTv5kQJuZt0zXlQU6sGq40tP55nTQ_A" />
+          <img alt="Volterra Brand Mark" className="h-10 w-10 object-contain" src={logo} />
           <span className="font-headline-md text-[24px] font-bold text-primary dark:text-secondary-fixed tracking-tight">Volterra</span>
         </Link>
       </div>

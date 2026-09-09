@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ScrollReveal from '../ui/ScrollReveal';
 
 export default function HowItWorksSection() {
@@ -13,9 +14,12 @@ export default function HowItWorksSection() {
           <p className="font-body-xl text-white/80 mb-10 max-w-lg leading-relaxed">
             Understand the charging landscape surrounding a potential site — from nearby stations and distance to charging type, power, connectors, and operators.
           </p>
-          <button className="bg-secondary-container text-primary px-10 py-5 rounded-full font-label-sm text-label-sm hover:bg-[#b5e05c] transition-colors font-bold flex items-center gap-2 shadow-lg shadow-secondary-container/20">
-            Start Location Analysis <span className="text-xl">→</span>
-          </button>
+         <Link
+  to="/analysis"
+  className="bg-secondary-container text-primary px-10 py-5 rounded-full font-label-sm text-label-sm hover:bg-[#b5e05c] transition-colors font-bold flex items-center gap-2 shadow-lg shadow-secondary-container/20"
+>
+  Start Location Analysis <span className="text-xl">→</span>
+</Link>
         </div>
 
         <div className="flex-1 w-full z-10">

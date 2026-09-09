@@ -1,4 +1,5 @@
 import ScrollReveal from '../ui/ScrollReveal';
+import { Link } from 'react-router-dom';
 
 export default function AnalysisPreviewSection() {
   return (
@@ -13,9 +14,9 @@ export default function AnalysisPreviewSection() {
           <p className="font-body-xl text-white/80 mb-10 max-w-lg">
             Understand the charging landscape surrounding a potential site — from nearby stations and distance to charging type, power, connectors, and operators.
           </p>
-          <button className="bg-white text-primary px-8 py-4 rounded-full font-label-sm text-label-sm hover:bg-surface-container transition-colors font-bold">
+          <Link to="/analysis" className="bg-white text-primary px-8 py-4 rounded-full font-label-sm text-label-sm hover:bg-surface-container transition-colors font-bold">
             Explore the Analysis
-          </button>
+          </Link>
         </div>
         <div className="flex-1 w-full max-w-md z-10">
           {/* Empty block matching original HTML structure for this section */}

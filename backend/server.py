@@ -8,7 +8,12 @@ Serves real charging station data from final_india_dataset.csv.
 import json
 import logging
 import math
+import os
 import sys
+import threading
+import time
+import uuid
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import tornado.ioloop
 import tornado.web
@@ -21,7 +26,33 @@ if str(ROOT_DIR) not in sys.path:
 from backend.data_loader import get_loader
 from backend.analysis_service import analyze_location, find_alternative_areas
 
-LOGGER = logging.getLogger(__name__)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+LOGGER = logging.getLogger("volterra.api")
+
+DEFAULT_CORS_ORIGINS = "http://127.0.0.1:5173,http://localhost:5173"
+ALLOWED_CORS_ORIGINS = {
+    origin.strip()
+    for origin in os.getenv("CORS_ALLOWED_ORIGINS", DEFAULT_CORS_ORIGINS).split(",")
+    if origin.strip()
+}
+REQUEST_BODY_LIMIT = int(os.getenv("REQUEST_BODY_LIMIT_BYTES", str(1024 * 1024)))
+SEARCH_QUERY_LIMIT = int(os.getenv("SEARCH_QUERY_MAX_LENGTH", "200"))
+STRING_PARAMETER_LIMIT = int(os.getenv("STRING_PARAMETER_MAX_LENGTH", "100"))
+SEARCH_RESOLVE_DEFAULT_LIMIT = int(os.getenv("SEARCH_RESOLVE_DEFAULT_LIMIT", "300"))
+SEARCH_RESOLVE_MAX_LIMIT = int(os.getenv("SEARCH_RESOLVE_MAX_LIMIT", "3000"))
+RATE_LIMIT_WINDOW = int(os.getenv("RATE_LIMIT_WINDOW_SECONDS", "60"))
+RATE_LIMIT_DEFAULT = int(os.getenv("RATE_LIMIT_REQUESTS", "120"))
+RATE_LIMIT_EXPENSIVE = int(os.getenv("RATE_LIMIT_EXPENSIVE_REQUESTS", "30"))
+RATE_LIMITED_PATHS = {
+    "/api/analyze-location": RATE_LIMIT_EXPENSIVE,
+    "/api/alternative-areas": RATE_LIMIT_EXPENSIVE,
+    "/api/search/resolve": RATE_LIMIT_DEFAULT,
+    "/api/stations": RATE_LIMIT_DEFAULT,
+    "/api/stations/nearby": RATE_LIMIT_DEFAULT,
+}
+RATE_LIMIT_STATE = {}
+RATE_LIMIT_LOCK = threading.Lock()
+EXECUTOR = ThreadPoolExecutor(max_workers=int(os.getenv("API_WORKERS", "4")))
 
 
 class RequestValidationError(ValueError):
@@ -64,6 +95,12 @@ def parse_finite_float(value, name, default=None, minimum=None, maximum=None):
 
 def parse_json_body(request):
     try:
+        content_length = int(request.headers.get("Content-Length", "0"))
+    except ValueError:
+        raise RequestValidationError("Invalid Content-Length.") from None
+    if content_length > REQUEST_BODY_LIMIT or len(request.body) > REQUEST_BODY_LIMIT:
+        raise RequestValidationError("Request body is too large.")
+    try:
         body = json.loads(request.body.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
         raise RequestValidationError("Invalid JSON body.") from None
@@ -82,11 +119,13 @@ def parse_candidate(body):
 
 
 def parse_analysis_parameters(body):
-    focus = body.get("focus", "Any")
+    return validate_analysis_parameters(body.get("focus", "Any"), body.get("minPower", "Any"), body.get("radius"))
+
+
+def validate_analysis_parameters(focus="Any", min_power="Any", radius=None):
     if not isinstance(focus, str) or focus not in {"Any", "AC", "DC", "High-Power DC"}:
         raise RequestValidationError("Invalid 'focus'.")
 
-    min_power = body.get("minPower", "Any")
     if min_power != "Any":
         if isinstance(min_power, bool):
             raise RequestValidationError("Invalid 'minPower'.")
@@ -94,20 +133,80 @@ def parse_analysis_parameters(body):
         min_power = str(min_power)
 
     return {
-        "radius": parse_finite_float(body.get("radius"), "radius", default=5, minimum=0, maximum=100),
+        "radius": parse_finite_float(radius, "radius", default=5, minimum=0, maximum=100),
         "focus": focus,
         "minPower": min_power
     }
 
 
+def validate_string(value, name, maximum=STRING_PARAMETER_LIMIT):
+    if len(value) > maximum:
+        raise RequestValidationError(f"'{name}' is too long.")
+    return value
+
+
+def rate_limit_for(request):
+    limit = RATE_LIMITED_PATHS.get(request.path)
+    if limit is None:
+        return None
+    now = time.monotonic()
+    client = request.remote_ip or "unknown"
+    key = (client, request.path)
+    with RATE_LIMIT_LOCK:
+        window_start, count = RATE_LIMIT_STATE.get(key, (now, 0))
+        if now - window_start >= RATE_LIMIT_WINDOW:
+            window_start, count = now, 0
+        count += 1
+        RATE_LIMIT_STATE[key] = (window_start, count)
+        if len(RATE_LIMIT_STATE) > 10000:
+            RATE_LIMIT_STATE.clear()
+        if count > limit:
+            return max(1, int(RATE_LIMIT_WINDOW - (now - window_start)))
+    return None
+
+
 class BaseHandler(tornado.web.RequestHandler):
+    def prepare(self):
+        self._request_started = time.perf_counter()
+        self.request_id = self.request.headers.get("X-Request-ID", str(uuid.uuid4()))[:80]
+        self.set_header("X-Request-ID", self.request_id)
+        origin = self.request.headers.get("Origin")
+        if origin in ALLOWED_CORS_ORIGINS:
+            self.set_header("Access-Control-Allow-Origin", origin)
+            self.set_header("Vary", "Origin")
+        retry_after = rate_limit_for(self.request)
+        if retry_after is not None:
+            self.set_header("Retry-After", str(retry_after))
+            self.write_json({"error": True, "message": "Rate limit exceeded."}, 429)
+            self.finish()
+
+    def on_finish(self):
+        LOGGER.info(
+            "request_complete request_id=%s method=%s path=%s status=%s duration_ms=%.1f",
+            getattr(self, "request_id", "unknown"),
+            self.request.method,
+            self.request.path,
+            self.get_status(),
+            (time.perf_counter() - getattr(self, "_request_started", time.perf_counter())) * 1000,
+        )
+
     def set_default_headers(self):
-        self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type, authorization")
         self.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.set_header("X-Content-Type-Options", "nosniff")
+        self.set_header("X-Frame-Options", "SAMEORIGIN")
+        self.set_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.set_header("Permissions-Policy", "geolocation=(self)")
+        self.set_header("Server", "")
         self.set_header("Content-Type", "application/json; charset=UTF-8")
+        if os.getenv("ENABLE_HSTS", "0") == "1":
+            self.set_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 
     def options(self, *args, **kwargs):
+        if self.request.headers.get("Origin") not in ALLOWED_CORS_ORIGINS:
+            self.set_status(403)
+            self.finish()
+            return
         self.set_status(204)
         self.finish()
 
@@ -116,11 +215,15 @@ class BaseHandler(tornado.web.RequestHandler):
         self.write(json.dumps(data, ensure_ascii=False))
 
     def write_error(self, status_code, **kwargs):
+        LOGGER.error("API error request_id=%s path=%s status=%s", getattr(self, "request_id", "unknown"), self.request.path, status_code, exc_info=kwargs.get("exc_info") if status_code >= 500 else None)
         if status_code >= 500:
-            LOGGER.error("Unhandled API error", exc_info=kwargs.get("exc_info"))
             error_msg = "Internal server error."
         elif status_code == 400:
             error_msg = "Invalid request."
+        elif status_code == 413:
+            error_msg = "Request body is too large."
+        elif status_code == 429:
+            error_msg = "Rate limit exceeded."
         else:
             error_msg = "Request failed."
         self.set_status(status_code)
@@ -151,12 +254,12 @@ class NetworkSummaryHandler(BaseHandler):
 
 class StationsHandler(BaseHandler):
     def get(self):
-        search = self.get_argument("search", self.get_argument("q", ""))
-        state = self.get_argument("state", "")
-        type_filter = self.get_argument("type", "All")
         try:
+            search = validate_string(self.get_argument("search", self.get_argument("q", "")), "search", SEARCH_QUERY_LIMIT)
+            state = validate_string(self.get_argument("state", ""), "state")
+            type_filter = validate_string(self.get_argument("type", "All"), "type")
             limit = parse_int(self.get_argument("limit", "1500"), "limit", minimum=1, maximum=3000)
-            offset = parse_int(self.get_argument("offset", "0"), "offset", minimum=0)
+            offset = parse_int(self.get_argument("offset", "0"), "offset", minimum=0, maximum=100000)
         except RequestValidationError as error:
             self.write_json({"error": True, "message": str(error)}, 400)
             return
@@ -189,8 +292,8 @@ class StationsHandler(BaseHandler):
 
 class SearchSuggestionsHandler(BaseHandler):
     def get(self):
-        q = self.get_argument("q", "").strip()
         try:
+            q = validate_string(self.get_argument("q", "").strip(), "q", SEARCH_QUERY_LIMIT)
             limit = parse_int(self.get_argument("limit", "8"), "limit", minimum=1, maximum=20)
         except RequestValidationError as error:
             self.write_json({"error": True, "message": str(error)}, 400)
@@ -202,9 +305,9 @@ class SearchSuggestionsHandler(BaseHandler):
 
 class SearchResolveHandler(BaseHandler):
     def get(self):
-        q = self.get_argument("q", "").strip()
         try:
-            limit = parse_int(self.get_argument("limit", "1500"), "limit", minimum=1, maximum=3000)
+            q = validate_string(self.get_argument("q", "").strip(), "q", SEARCH_QUERY_LIMIT)
+            limit = parse_int(self.get_argument("limit", str(SEARCH_RESOLVE_DEFAULT_LIMIT)), "limit", minimum=1, maximum=SEARCH_RESOLVE_MAX_LIMIT)
         except RequestValidationError as error:
             self.write_json({"error": True, "message": str(error)}, 400)
             return
@@ -224,16 +327,22 @@ class NearbyStationsHandler(BaseHandler):
             self.write_json({"error": True, "message": message}, 400)
             return
 
+        try:
+            focus = validate_string(self.get_argument("focus", "Any"), "focus")
+            min_power = validate_string(self.get_argument("minPower", "Any"), "minPower")
+            parameters = validate_analysis_parameters(focus, min_power, radius)
+        except RequestValidationError as error:
+            self.write_json({"error": True, "message": str(error)}, 400)
+            return
+
         loader = get_loader()
-        focus = self.get_argument("focus", "Any")
-        min_power = self.get_argument("minPower", "Any")
 
         nearby_stations, relevant_stations = loader.query_radius(
             lat=lat,
             lon=lng,
-            radius_km=radius,
-            focus=focus,
-            min_power=min_power
+            radius_km=parameters["radius"],
+            focus=parameters["focus"],
+            min_power=parameters["minPower"]
         )
 
         self.write_json({
@@ -247,7 +356,7 @@ class NearbyStationsHandler(BaseHandler):
 
 
 class AnalyzeLocationHandler(BaseHandler):
-    def post(self):
+    async def post(self):
         try:
             body = parse_json_body(self.request)
             candidate = parse_candidate(body)
@@ -256,12 +365,12 @@ class AnalyzeLocationHandler(BaseHandler):
             self.write_json({"error": True, "message": str(error)}, 400)
             return
 
-        analysis = analyze_location(candidate, parameters)
+        analysis = await tornado.ioloop.IOLoop.current().run_in_executor(EXECUTOR, analyze_location, candidate, parameters)
         self.write_json(analysis)
 
 
 class AlternativeAreasHandler(BaseHandler):
-    def post(self):
+    async def post(self):
         try:
             body = parse_json_body(self.request)
             candidate = parse_candidate(body)
@@ -270,7 +379,10 @@ class AlternativeAreasHandler(BaseHandler):
             self.write_json({"error": True, "message": str(error)}, 400)
             return
 
-        alternatives = find_alternative_areas(candidate, parameters)
+        alternatives = await tornado.ioloop.IOLoop.current().run_in_executor(
+            EXECUTOR,
+            lambda: find_alternative_areas(candidate, parameters)
+        )
         self.write_json({"alternatives": alternatives})
 
 
@@ -288,13 +400,14 @@ def make_app():
 
 
 if __name__ == "__main__":
-    port = 8000
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8000"))
     print("[VOLTERRA] Initializing backend data layer...")
     # Pre-warm loader
     get_loader()
 
     app = make_app()
-    app.listen(port, address="127.0.0.1")
-    print(f"[VOLTERRA] API Server running on http://127.0.0.1:{port}")
+    app.listen(port, address=host, max_body_size=REQUEST_BODY_LIMIT)
+    print(f"[VOLTERRA] API Server running on http://{host}:{port}")
     print("[VOLTERRA] Ready to serve location intelligence requests.")
     tornado.ioloop.IOLoop.current().start()
