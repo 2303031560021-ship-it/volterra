@@ -6,6 +6,8 @@
  * loaded dynamically from the verified BEE 26 October 2025 dataset snapshot.
  */
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+
 /**
  * Fetches filtered stations from the backend API.
  * @param {Object} filters
@@ -37,7 +39,7 @@ export async function fetchStationsWithMeta(filters = {}) {
     params.set('bounds', filters.bounds.join(','));
   }
 
-  const response = await fetch(`/api/stations?${params.toString()}`);
+  const response = await fetch(`${API_BASE_URL}/api/stations?${params.toString()}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch stations: ${response.statusText}`);
   }
@@ -50,7 +52,7 @@ export async function fetchStationsWithMeta(filters = {}) {
 export async function fetchSearchSuggestions(query) {
   if (!query || !query.trim()) return [];
   try {
-    const response = await fetch(`/api/search/suggest?q=${encodeURIComponent(query.trim())}`);
+    const response = await fetch(`${API_BASE_URL}/api/search/suggest?q=${encodeURIComponent(query.trim())}`);
     if (!response.ok) return [];
     const data = await response.json();
     return data.suggestions || [];
@@ -65,7 +67,7 @@ export async function fetchSearchSuggestions(query) {
  */
 export async function resolveLocationSearch(query) {
   if (!query || !query.trim()) return null;
-  const response = await fetch(`/api/search/resolve?q=${encodeURIComponent(query.trim())}`);
+  const response = await fetch(`${API_BASE_URL}/api/search/resolve?q=${encodeURIComponent(query.trim())}`);
   if (!response.ok) {
     throw new Error(`Search failed: ${response.statusText}`);
   }
@@ -84,7 +86,7 @@ export async function fetchNearbyStations(lat, lng, options = {}) {
     minPower: options.minPower || 'Any'
   });
 
-  const response = await fetch(`/api/stations/nearby?${params.toString()}`);
+  const response = await fetch(`${API_BASE_URL}/api/stations/nearby?${params.toString()}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch nearby stations: ${response.statusText}`);
   }
@@ -95,7 +97,7 @@ export async function fetchNearbyStations(lat, lng, options = {}) {
  * Executes full location intelligence analysis on candidate coordinates.
  */
 export async function analyzeLocation(candidate, options = {}) {
-  const response = await fetch('/api/analyze-location', {
+  const response = await fetch(`${API_BASE_URL}/api/analyze-location`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -115,7 +117,7 @@ export async function analyzeLocation(candidate, options = {}) {
  * Generates alternative areas around candidate location with strong/moderate charging gaps.
  */
 export async function fetchAlternativeAreas(candidate, options = {}) {
-  const response = await fetch('/api/alternative-areas', {
+  const response = await fetch(`${API_BASE_URL}/api/alternative-areas`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -136,7 +138,7 @@ export async function fetchAlternativeAreas(candidate, options = {}) {
  * Fetches dataset summary metadata.
  */
 export async function fetchNetworkSummary() {
-  const response = await fetch('/api/network-summary');
+  const response = await fetch(`${API_BASE_URL}/api/network-summary`);
   if (!response.ok) {
     throw new Error(`Failed to fetch network summary: ${response.statusText}`);
   }
